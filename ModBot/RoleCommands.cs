@@ -45,7 +45,7 @@ public sealed partial class DiscordCommands : ApplicationCommandModule
         var msg = new DiscordMessageBuilder()
             .WithEmbed(embed);
         if ((int)urgency >= Convert.ToInt32(GetEnvironmentVariable("URGENCY_PING_LEVEL")))
-            msg.WithContent("<@&814129218153086996>");
+            msg.WithContent($"<@&{GetEnvironmentVariable("MOD_ROLE_ID")}>");
 
         await channel.SendMessageAsync(msg);
         await ctx.CreateResponseAsync("Message sent!");
