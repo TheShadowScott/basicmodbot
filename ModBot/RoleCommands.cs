@@ -54,7 +54,7 @@ public sealed partial class DiscordCommands : ApplicationCommandModule
     public static async Task AddRole(InteractionContext ctx, [Option("user", "User to give the role to")] DiscordUser user,
         [Option("role", "Role to give the user")] DiscordRole role)
     {
-        if (!ctx.Member.Permissions.HasPermission(Permissions.ManageRoles) || ctx.Channel.IsPrivate)
+        if (!ctx.CheckPermissions(Permissions.ManageRoles))
         {
             await ctx.CreateResponseAsync("You need the `Manage Roles` permission to use this command.");
             return;
@@ -76,7 +76,7 @@ public sealed partial class DiscordCommands : ApplicationCommandModule
     public static async Task Remove(InteractionContext ctx, [Option("user", "User to give the role to")] DiscordUser user,
         [Option("role", "Role to give the user")] DiscordRole role)
     {
-        if (!ctx.Member.Permissions.HasPermission(Permissions.ManageRoles) || ctx.Channel.IsPrivate)
+        if (!ctx.CheckPermissions(Permissions.ManageRoles))
         {
             await ctx.CreateResponseAsync("You need the `Manage Roles` permission to use this command.");
             return;
@@ -105,7 +105,7 @@ public sealed partial class DiscordCommands : ApplicationCommandModule
     public static async Task Nick(InteractionContext ctx, [Option("user", "User to rename.")] DiscordUser user, [Option("name", "Name to change to")] string name,
         [Option("reason", "Reason for the name change")] string reason)
     {
-        if (!ctx.Member.Permissions.HasPermission(Permissions.ManageNicknames) || ctx.Channel.IsPrivate)
+        if (ctx.Channel.IsPrivate || !ctx.Member.Permissions.HasPermission(Permissions.ManageNicknames))
         {
             await ctx.CreateResponseAsync("You need the `Manage Nicknames` permission");
             return;

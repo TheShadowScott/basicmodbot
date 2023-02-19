@@ -9,17 +9,16 @@ using DiscordBot;
 using Microsoft.Win32.SafeHandles;
 using System.Security.Cryptography.X509Certificates;
 using static System.Globalization.TextInfo;
-using static ModBot.ListExtensions;
+using static ModBot.GMethods;
 
 namespace ModBot;
-internal sealed class NullCommands : ApplicationCommandModule { }
 public sealed partial class DiscordCommands : ApplicationCommandModule
 {
     [SlashCommand("warn", "Warns a user.")]
     public async Task WarnUser(InteractionContext ctx, [Option("user", "User to issue the warning to.")] DiscordUser user,
         [Option("reason", "Reason for warning the user.")] string reason = "No reason provided.")
     {
-        if (ctx.Channel.IsPrivate || !ctx.Member.Permissions.HasPermission(Permissions.ManageRoles) || ctx.User.IsBot)
+        if (!ctx.CheckPermissions(Permissions.ModerateMembers))
         {
             await ctx.CreateResponseAsync("You must have the `ManageRoles` permission to use this command", true);
             return;
@@ -41,7 +40,7 @@ public sealed partial class DiscordCommands : ApplicationCommandModule
     {
         try
         {
-            if (ctx.Channel.IsPrivate || !ctx.Member.Permissions.HasPermission(Permissions.ManageRoles) || ctx.User.IsBot)
+            if (!ctx.CheckPermissions(Permissions.ModerateMembers))
             {
                 await ctx.CreateResponseAsync("You must have the `ManageRoles` permission to use this command", true);
                 return;
@@ -97,7 +96,7 @@ public sealed partial class DiscordCommands : ApplicationCommandModule
     public async Task KickUser(InteractionContext ctx, [Option("user", "User to kick")] DiscordUser user,
         [Option("reason", "Reason to kick")] string reason = "No Reason Provided")
     {
-        if (ctx.Channel.IsPrivate || !ctx.Member.Permissions.HasPermission(Permissions.KickMembers) || ctx.User.IsBot)
+        if (!ctx.CheckPermissions(Permissions.KickMembers))
         {
             await ctx.CreateResponseAsync("You must have the `KickMembers` permission to use this command", true);
             return;
@@ -114,7 +113,7 @@ public sealed partial class DiscordCommands : ApplicationCommandModule
         [Option("days", "Days of messges to delete")] long days = 0,
         [Option("reason", "Reason to ban")] string reason = "No reason provided")
     {
-        if (ctx.Channel.IsPrivate || !ctx.Member.Permissions.HasPermission(Permissions.BanMembers) || ctx.User.IsBot)
+        if (!ctx.CheckPermissions(Permissions.BanMembers))
         {
             await ctx.CreateResponseAsync("You must have the `BanMembers` permission to use this command", true);
             return;
@@ -129,7 +128,7 @@ public sealed partial class DiscordCommands : ApplicationCommandModule
     public async Task UnbanUser(InteractionContext ctx, [Option("user", "User to unban")] DiscordUser user, 
         [Option("reason", "Reason to unban")] string reason = "No reason provided")
     {
-        if (ctx.Channel.IsPrivate || !ctx.Member.Permissions.HasPermission(Permissions.BanMembers) || ctx.User.IsBot)
+        if (!ctx.CheckPermissions(Permissions.BanMembers))
         {
             await ctx.CreateResponseAsync("You must have the `BanMembers` permission to use this command", true);
             return;
@@ -142,7 +141,7 @@ public sealed partial class DiscordCommands : ApplicationCommandModule
     [SlashCommand("droplog", "Drops a discipline log.")]
     public async Task DropData(InteractionContext ctx, [Option("log", "Id of the log to drop (should be exactly 36 characters).")] string id)
     {
-        if (ctx.Channel.IsPrivate || !ctx.Member.Permissions.HasPermission(Permissions.ManageRoles) || ctx.User.IsBot)
+        if (!ctx.CheckPermissions(Permissions.ModerateMembers))
         {
             await ctx.CreateResponseAsync("You must have the `ManageRoles` permission to use this command", true);
             return;
@@ -155,7 +154,7 @@ public sealed partial class DiscordCommands : ApplicationCommandModule
     public async Task Note(InteractionContext ctx, [Option("user", "User to issue the warning to.")] DiscordUser user,
         [Option("note", "Note to add to the user.")] string note)
     {
-        if (ctx.Channel.IsPrivate || !ctx.Member.Permissions.HasPermission(Permissions.ManageRoles) || ctx.User.IsBot)
+        if (!ctx.CheckPermissions(Permissions.ModerateMembers))
         {
             await ctx.CreateResponseAsync("You must have the `ManageRoles` permission to use this command", true);
             return;
@@ -182,7 +181,7 @@ public sealed partial class DiscordCommands : ApplicationCommandModule
         [Option("length", "Time to timeout a userfor")] double length,
         [Option("reason", "Reason to time out")] string reason = "No reason provided")
     {
-        if (ctx.Channel.IsPrivate || !ctx.Member.Permissions.HasFlag(Permissions.ModerateMembers) || ctx.User.IsBot)
+        if (!ctx.CheckPermissions(Permissions.ModerateMembers))
         {
             await ctx.CreateResponseAsync("You must have the `Time out members` permission to use this command.");
             return;
