@@ -22,7 +22,7 @@ The modmail aspect of this bot relies on three aspects of your `.env` file:
 		2. Level 2 &mdash; Pings will be sent with all modmail messages that aren't of _low_ urgency.
 		3. Level 3 &mdash; Pings will be sent for _high_ and _urgent_ level messages.
 		4. Level 4 &mdash; Pings will be sent for _urgent_ messages only.
-		5. Level 5 &mdash; Pings will nevel be sent.
+		5. Level 5 &mdash; Pings will never be sent.
 	- Keep in mind that users set the urgency themselves, and people have a tendency to overestimate their issues. You may want to set the ping level higher than you expect, or if spam issues present themselves, set the ping to 5.
 	- Values of less than one or greater than five, _will not error_, however they will have no effects beyond those of level one and level five, respectfully.
 ## SQL Setup
