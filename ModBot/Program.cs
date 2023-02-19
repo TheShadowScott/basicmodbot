@@ -23,7 +23,6 @@ class Program
         var client = new DiscordClient(config);
 
         var slash = client.UseSlashCommands();
-        // slash.RegisterCommands(typeof(NullCommands), 772938218471292958);
 
         slash.RegisterCommands(typeof(DiscordCommands));
 
