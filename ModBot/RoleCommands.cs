@@ -60,7 +60,7 @@ public sealed partial class DiscordCommands : ApplicationCommandModule
             return;
         }
 
-        if (((DiscordMember)user).Roles.Contains(role))
+        if ((user as DiscordMember)!.Roles.Contains(role))
         {
             await ctx.CreateResponseAsync("This user already has this role!");
             return;
@@ -68,7 +68,7 @@ public sealed partial class DiscordCommands : ApplicationCommandModule
 
         await ctx.CreateResponseAsync(InteractionResponseType.DeferredChannelMessageWithSource);
 
-        await ((DiscordMember)user).GrantRoleAsync(role);
+        await (user as DiscordMember)!.GrantRoleAsync(role);
 
         await ctx.EditResponseAsync(new DiscordWebhookBuilder().WithContent($"Successfully gave <@{user.Id}> the <@&{role.Id}> role!"));
     }
@@ -82,7 +82,7 @@ public sealed partial class DiscordCommands : ApplicationCommandModule
             return;
         }
 
-        if (!(((DiscordMember)user).Roles.Contains(role)))
+        if (!((user as DiscordMember)!.Roles.Contains(role)))
         {
             await ctx.CreateResponseAsync("This user doesn't have this role!");
             return;
@@ -91,7 +91,7 @@ public sealed partial class DiscordCommands : ApplicationCommandModule
         await ctx.CreateResponseAsync(InteractionResponseType.DeferredChannelMessageWithSource);
         try
         {
-            await ((DiscordMember)user).GrantRoleAsync(role);
+            await (user as DiscordMember)!.GrantRoleAsync(role);
 
             await ctx.EditResponseAsync(new DiscordWebhookBuilder().WithContent($"Successfully removed the <@&{role.Id}> role from <@{user.Id}>!"));
         }
@@ -113,7 +113,7 @@ public sealed partial class DiscordCommands : ApplicationCommandModule
         await ctx.CreateResponseAsync(InteractionResponseType.DeferredChannelMessageWithSource);
         try
         {
-            await ((DiscordMember)user).ModifyAsync(x =>
+            await (user as DiscordMember)!.ModifyAsync(x =>
             {
                 x.Nickname = name;
                 x.AuditLogReason = reason;

@@ -32,7 +32,7 @@ public sealed partial class DiscordCommands : ApplicationCommandModule
 
         await ctx.EditResponseAsync(new DiscordWebhookBuilder().AddEmbed(embed));
 
-        await ((DiscordMember)user).SendMessageAsync(QuickCreate.QuickEmbed(@$"You have been warned in {ctx.Guild.Name} for {reason}", 0xFFEA00));
+        await (user as DiscordMember)!.SendMessageAsync(QuickCreate.QuickEmbed(@$"You have been warned in {ctx.Guild.Name} for {reason}", 0xFFEA00));
     }
 
     [SlashCommand("fetch", "Fetches a user's discipline logs.")]
@@ -102,8 +102,8 @@ public sealed partial class DiscordCommands : ApplicationCommandModule
             return;
         }
         await ctx.CreateResponseAsync(InteractionResponseType.DeferredChannelMessageWithSource);
-        await ((DiscordMember)user).SendMessageAsync(QuickCreate.QuickEmbed(@$"You have been kicked from {ctx.Guild.Name} for {reason}", 0xDf9449));
-        await ((DiscordMember)user).RemoveAsync(reason);
+        await (user as DiscordMember)!.SendMessageAsync(QuickCreate.QuickEmbed(@$"You have been kicked from {ctx.Guild.Name} for {reason}", 0xDf9449));
+        await (user as DiscordMember)!.RemoveAsync(reason);
         await ExecCommand("KICK", user.Id, reason, ctx.User);
 
         await ctx.EditResponseAsync(new DiscordWebhookBuilder().AddEmbed(QuickCreate.QuickEmbed(@$"<@{user.Id}> has been kicked for {reason}", 0xDf9449)));
@@ -119,8 +119,8 @@ public sealed partial class DiscordCommands : ApplicationCommandModule
             return;
         }
         await ctx.CreateResponseAsync(InteractionResponseType.DeferredChannelMessageWithSource);
-        await ((DiscordMember)user).SendMessageAsync(QuickCreate.QuickEmbed(@$"You have been banned from {ctx.Guild.Name} for {reason}", 0xC70039));
-        await ((DiscordMember)user).BanAsync((int)days, reason);
+        await (user as DiscordMember)!.SendMessageAsync(QuickCreate.QuickEmbed(@$"You have been banned from {ctx.Guild.Name} for {reason}", 0xC70039));
+        await (user as DiscordMember)!.BanAsync((int)days, reason);
         await ExecCommand("BAN", user.Id, reason, ctx.User);
         await ctx.EditResponseAsync(new DiscordWebhookBuilder().AddEmbed(QuickCreate.QuickEmbed($"<@{user.Id}> has been banned for {reason}.\n\nAdditionally I deleted {days} days of messages.", 0xC70039)));
     }
@@ -191,7 +191,7 @@ public sealed partial class DiscordCommands : ApplicationCommandModule
         try
         {
             await ExecCommand("MUTE", user.Id, $"{(length != -1 ? $"{length} min" : "REMOVED")}; {reason}", ctx.User);
-            await ((DiscordMember)user).TimeoutAsync(DateTimeOffset.UtcNow.AddMinutes(length), reason);
+            await (user as DiscordMember)!.TimeoutAsync(DateTimeOffset.UtcNow.AddMinutes(length), reason);
             await ctx.EditResponseAsync(
                 new DiscordWebhookBuilder().AddEmbed(
                     QuickCreate.QuickEmbed(
@@ -201,7 +201,7 @@ public sealed partial class DiscordCommands : ApplicationCommandModule
                     )
                 );
             if (length > 0)
-                await ((DiscordMember)user).SendMessageAsync($"You were timed out in {ctx.Guild.Name} for {length} mintues for {reason}");
+                await (user as DiscordMember)!.SendMessageAsync($"You were timed out in {ctx.Guild.Name} for {length} mintues for {reason}");
         }
         catch (Exception e)
         {
