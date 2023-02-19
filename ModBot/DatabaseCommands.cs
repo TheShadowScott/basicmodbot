@@ -67,6 +67,25 @@ static class DatabaseCommands
         }
     }
 
+    internal static async Task Alter(string id, string reason)
+    {
+        try
+        {
+            using (SqlConnection conn = new(Environment.GetEnvironmentVariable("CONN_STRING")))
+            {
+                conn.Open();
+                SqlCommand cmd = new("UPDATE user_warnings SET Reason = @reason WHERE Id = @id");
+                cmd.Parameters.AddWithValue("@reason", reason);
+                cmd.Parameters.AddWithValue("@id", id);
+                await cmd.ExecuteNonQueryAsync();
+            }
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+        }
+    }
+
     internal static async Task Drop(string id)
     {
         try
