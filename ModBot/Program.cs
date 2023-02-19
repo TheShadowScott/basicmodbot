@@ -7,6 +7,7 @@ namespace ModBot;
 
 class Program
 {
+    internal sealed class NullCommands : ApplicationCommandModule { }
     static async Task Main()
     {
         DotNetEnv.Env.TraversePath().Load();
@@ -24,11 +25,10 @@ class Program
 
         var slash = client.UseSlashCommands();
 
+        slash.RegisterCommands<NullCommands>();
         slash.RegisterCommands(typeof(DiscordCommands));
 
         await client.ConnectAsync();
-
-        foreach (var guild in client.Guilds) Console.WriteLine(guild);
 
         Thread.Sleep(Timeout.Infinite);
 
