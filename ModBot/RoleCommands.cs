@@ -105,7 +105,7 @@ public sealed partial class DiscordCommands : ApplicationCommandModule
     public static async Task Nick(InteractionContext ctx, [Option("user", "User to rename.")] DiscordUser user, [Option("name", "Name to change to")] string name,
         [Option("reason", "Reason for the name change")] string reason)
     {
-        if (ctx.Channel.IsPrivate || !ctx.Member.Permissions.HasPermission(Permissions.ManageNicknames))
+        if (!ctx.CheckPermissions(Permissions.ManageNicknames))
         {
             await ctx.CreateResponseAsync("You need the `Manage Nicknames` permission");
             return;
