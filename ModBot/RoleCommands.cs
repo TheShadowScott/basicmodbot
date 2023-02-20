@@ -52,7 +52,8 @@ public sealed partial class DiscordCommands : ApplicationCommandModule
     }
     [SlashCommand("addrole", "Adds a role to a user.")]
     public static async Task AddRole(InteractionContext ctx, [Option("user", "User to give the role to")] DiscordUser user,
-        [Option("role", "Role to give the user")] DiscordRole role)
+        [Option("role", "Role to give the user")] DiscordRole role,
+        [Option("log", "Log this to the database?")] bool log = false)
     {
         if (!ctx.CheckPermissions(Permissions.ManageRoles))
         {
@@ -70,11 +71,15 @@ public sealed partial class DiscordCommands : ApplicationCommandModule
 
         await (user as DiscordMember)!.GrantRoleAsync(role);
 
+        if (log) 
+            await ExecCommand("AROLE", user.Id, role.Id.ToString(), ctx.User);
+
         await ctx.EditResponseAsync(new DiscordWebhookBuilder().WithContent($"Successfully gave <@{user.Id}> the <@&{role.Id}> role!"));
     }
     [SlashCommand("removerole", "Adds a role to a user.")]
     public static async Task Remove(InteractionContext ctx, [Option("user", "User to give the role to")] DiscordUser user,
-        [Option("role", "Role to give the user")] DiscordRole role)
+        [Option("role", "Role to give the user")] DiscordRole role,
+        [Option("log", "Log this to the database?")] bool log = false)
     {
         if (!ctx.CheckPermissions(Permissions.ManageRoles))
         {
@@ -92,6 +97,9 @@ public sealed partial class DiscordCommands : ApplicationCommandModule
         try
         {
             await (user as DiscordMember)!.GrantRoleAsync(role);
+
+            if (log)
+                await ExecCommand("RROLE", user.Id, role.Id.ToString(), ctx.User);
 
             await ctx.EditResponseAsync(new DiscordWebhookBuilder().WithContent($"Successfully removed the <@&{role.Id}> role from <@{user.Id}>!"));
         }

@@ -72,7 +72,7 @@ public sealed partial class DiscordCommands : ApplicationCommandModule
     [SlashCommand("droplog", "Drops a discipline log.")]
     public async Task DropData(InteractionContext ctx, [Option("log", "Id of the log to drop (should be exactly 36 characters).")] string id)
     {
-        if (!ctx.CheckPermissions(Permissions.ModerateMembers))
+        if (!ctx.CheckPermissions(Permissions.Administrator))
         {
             await ctx.CreateResponseAsync("You must have the `ManageRoles` permission to use this command", true);
             return;
