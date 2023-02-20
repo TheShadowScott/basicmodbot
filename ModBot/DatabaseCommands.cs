@@ -74,7 +74,7 @@ static class DatabaseCommands
             using (SqlConnection conn = new(Environment.GetEnvironmentVariable("CONN_STRING")))
             {
                 conn.Open();
-                SqlCommand cmd = new("UPDATE user_warnings SET Reason = @reason WHERE Id = @id");
+                SqlCommand cmd = new("UPDATE user_warnings SET WarningReason = @reason WHERE Id = @id", conn);
                 cmd.Parameters.AddWithValue("@reason", reason);
                 cmd.Parameters.AddWithValue("@id", id);
                 await cmd.ExecuteNonQueryAsync();

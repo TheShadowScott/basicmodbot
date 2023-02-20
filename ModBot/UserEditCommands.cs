@@ -47,7 +47,7 @@ public sealed partial class DiscordCommands : ApplicationCommandModule
                 {
                     foreach ((string id, string type, long _, long perp, string reason, string timestamp) in item)
                     {
-                        warnings.AddField(type, $"**Perpetrator**: <@{perp}> -  {perp}\n**Reason**: {reason}\n**Time**: <t:{((DateTimeOffset)DateTime.Parse(timestamp)).ToUnixTimeSeconds()}:F>\n**Id No**: {id}");
+                        warnings.AddField(type, $"**Actor**: <@{perp}> -  {perp}\n**Reason**: {reason}\n**Time**: <t:{((DateTimeOffset)DateTime.Parse(timestamp)).ToUnixTimeSeconds()}:F>\n**Id No**: {id}");
                     }
                     warnings.WithTitle($"Dicipline Logs for {item[0].Item3}")
                         .WithColor(0x20afff)
@@ -118,7 +118,7 @@ public sealed partial class DiscordCommands : ApplicationCommandModule
                 new DiscordEmbedBuilder()
                 {
                     Title = "Altered Log",
-                    Description = $"Altered the log {id} to have reason {reason}. The old reason has been updated and is no longer recoverable.",
+                    Description = $"Altered the log `{id}` to have reason `{reason.Replace("`", "\\`")}`. The old reason has been updated and is no longer recoverable.",
                     Color = (DiscordColor)0xff007f
                 }
             ));
