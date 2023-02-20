@@ -5,6 +5,11 @@ using DSharpPlus.SlashCommands;
 
 namespace ModBot;
 
+public sealed partial class DiscordCommands : ApplicationCommandModule
+{
+    [SlashCommand("repo", "Links the github repo")]
+    public async Task Repo(InteractionContext ctx) => await ctx.CreateResponseAsync("https://github.com/TheShadowScott/basicmodbot");
+}
 class Program
 {
     internal sealed class NullCommands : ApplicationCommandModule { }
