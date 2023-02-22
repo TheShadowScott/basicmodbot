@@ -2,6 +2,8 @@
 using static ModBot.DatabaseCommands;
 using DSharpPlus;
 using DSharpPlus.SlashCommands;
+using DSharpPlus.Entities;
+using System.Xml.Serialization;
 
 namespace ModBot;
 
@@ -12,18 +14,29 @@ public sealed partial class DiscordCommands : ApplicationCommandModule
 }
 class Program
 {
+    private static async Task UpdateStatus(DiscordClient client, DiscordActivity activity)
+        => await client.UpdateStatusAsync(activity);
     internal sealed class NullCommands : ApplicationCommandModule { }
+
+    internal static Settings LocalSettings = new();
+    internal static void LoadSettings()
+    {
+        XmlSerializer xmlSerializer = new XmlSerializer(typeof(Settings));
+        using StringReader reader = new(File.ReadAllText(@".\Settings.xml"));
+        LocalSettings = (Settings)xmlSerializer.Deserialize(reader)!;
+    }
+    internal static List<ulong> ModList => LocalSettings.BotSettings.ModRoles.ModRoleIds;
     static async Task Main()
     {
-        DotNetEnv.Env.TraversePath().Load();
-
+        LoadSettings();
         var config = new DiscordConfiguration()
         {
-            Token = Environment.GetEnvironmentVariable("DISCORD_TOKEN"),
+            Token = LocalSettings.InitSettings.BotId,
             TokenType = TokenType.Bot,
             AutoReconnect = true,
             MinimumLogLevel = Microsoft.Extensions.Logging.LogLevel.Debug,
-            LogTimestampFormat = "dd MMM yyyy - HH:mm:ss.fff zzz"
+            LogTimestampFormat = "dd MMM yyyy - HH:mm:ss.fff zzz",
+            Intents = DiscordIntents.AllUnprivileged | DiscordIntents.GuildPresences,
         };
 
         var client = new DiscordClient(config);
@@ -33,7 +46,13 @@ class Program
         slash.RegisterCommands<NullCommands>();
         slash.RegisterCommands(typeof(DiscordCommands));
 
-        await client.ConnectAsync();
+        DiscordActivity activity = new()
+        {
+            Name = "Under Devlopment",
+            ActivityType = ActivityType.Playing
+        };
+
+        await client.ConnectAsync(activity, UserStatus.DoNotDisturb);
 
         Thread.Sleep(Timeout.Infinite);
 

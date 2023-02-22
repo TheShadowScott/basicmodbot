@@ -15,4 +15,9 @@
     <PackageReference Include="System.Data.SqlClient" Version="4.8.5" />
     <PackageReference Include="System.Globalization" Version="4.3.0" />
   </ItemGroup>
+  <ItemGroup>
+    <None Update="Settings.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
 </Project>

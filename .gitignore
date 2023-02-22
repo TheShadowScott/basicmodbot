@@ -363,6 +363,7 @@ MigrationBackup/
 FodyWeavers.xsd
 
 # Data files
+Settings.xml
 .env
 
 # Owner files

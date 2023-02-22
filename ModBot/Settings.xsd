@@ -1,0 +1,60 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="BotSettings"
+    elementFormDefault="qualified"
+    xmlns="http://tempuri.org/XMLSchema1.xsd"
+    xmlns:mstns="http://tempuri.org/XMLSchema1.xsd"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+>
+	<xs:element name="Settings">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="InitSettings">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="BotId" type="xs:string" />
+							<xs:element name="SQLString" type="xs:string" />
+							<xs:element name="OwnerId" type="xs:unsignedLong" />
+							<xs:element name="PresenceName" minOccurs="0" type="xs:string" />
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="ModMailSettings" minOccurs="0">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="ChannelId" type="xs:unsignedLong" />
+							<xs:element name="DefaultModeratorRole" type="xs:unsignedLong" />
+							<xs:element name="UrgencyPingLvl">
+								<xs:simpleType>
+									<xs:restriction base="xs:integer">
+										<xs:minInclusive value="1" />
+										<xs:maxInclusive value="5" />
+									</xs:restriction>
+								</xs:simpleType>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>	
+				</xs:element>
+				<xs:element name="BotSettings" minOccurs="0">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="ModRoles" minOccurs="0">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="ModRoleId" type="xs:unsignedLong" minOccurs="1" maxOccurs="unbounded"/>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="AdminRoles" minOccurs="0">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="AdminRoleId" type="xs:unsignedLong" minOccurs="1" maxOccurs="unbounded"/>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

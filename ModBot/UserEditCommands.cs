@@ -72,7 +72,7 @@ public sealed partial class DiscordCommands : ApplicationCommandModule
     [SlashCommand("droplog", "Drops a discipline log.")]
     public async Task DropData(InteractionContext ctx, [Option("log", "Id of the log to drop (should be exactly 36 characters).")] string id)
     {
-        if (!ctx.CheckPermissions(Permissions.Administrator))
+        if (!ctx.IsAdmin())
         {
             await ctx.CreateResponseAsync("You must have the `ManageRoles` permission to use this command", true);
             return;
@@ -104,7 +104,7 @@ public sealed partial class DiscordCommands : ApplicationCommandModule
     public async Task AlterLog(InteractionContext ctx, [Option("id", "ID of the log to change")] string id, 
         [Option("reason", "The new reasoning for the warning")] string reason)
     {
-        if (!ctx.CheckPermissions(Permissions.Administrator))
+        if (!ctx.IsAdmin())
         {
             await ctx.CreateResponseAsync("You must be an administrator for this action.", true);
             return;
@@ -126,7 +126,11 @@ public sealed partial class DiscordCommands : ApplicationCommandModule
     [SlashCommand("userinfo", "Grabs information about a user.")]
     public async Task UserInfo(InteractionContext ctx, [Option("user", "User to grab the info for.")] DiscordUser user = null!)
     {
-        if (ctx.Channel.IsPrivate) return;
+        if (ctx.Channel.IsPrivate || ((user.Id != ctx.User.Id) && !(ctx.Member.IsMod())))
+        {
+            await ctx.CreateResponseAsync("You aren't able to do that here.", true);
+            return;
+        }
         user ??= ctx.User;
         var member = user as DiscordMember;
         var embed = new DiscordEmbedBuilder()
@@ -140,4 +144,7 @@ public sealed partial class DiscordCommands : ApplicationCommandModule
 
         await ctx.CreateResponseAsync(embed);
     }
+    [SlashCommand("ping", "Pings the bot")]
+    public async Task Ping(InteractionContext ctx) =>
+        await ctx.CreateResponseAsync($"Pong! `{ctx.Client.Ping} ms`");
 }
