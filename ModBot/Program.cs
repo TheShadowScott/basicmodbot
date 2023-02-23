@@ -29,6 +29,7 @@ class Program
     static async Task Main()
     {
         LoadSettings();
+
         var config = new DiscordConfiguration()
         {
             Token = LocalSettings.InitSettings.BotId,
