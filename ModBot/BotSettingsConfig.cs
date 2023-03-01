@@ -33,7 +33,7 @@ public class ModRoles
 {
 
     [XmlElement(ElementName = "ModRoleId")]
-    public List<double> ModRoleId { get; set; }
+    public List<ulong> ModRoleId { get; set; }
 }
 
 [XmlRoot(ElementName = "AdminRoles")]
@@ -41,7 +41,7 @@ public class AdminRoles
 {
 
     [XmlElement(ElementName = "AdminRoleId")]
-    public List<double> AdminRoleId { get; set; }
+    public List<ulong> AdminRoleId { get; set; }
 }
 
 [XmlRoot(ElementName = "BotSettings")]

@@ -26,7 +26,7 @@ class Program
         using StringReader reader = new(File.ReadAllText(@".\Settings.xml"));
         LocalSettings = (Settings)xmlSerializer.Deserialize(reader)!;
     }
-    internal static List<ulong> ModList => LocalSettings.BotSettings.ModRoles.ModRoleIds;
+    internal static List<ulong> ModList => LocalSettings.BotSettings.ModRoles.ModRoleId;
     static async Task Main()
     {
         LoadSettings();
@@ -45,8 +45,8 @@ class Program
 
         var slash = client.UseSlashCommands();
 
-        // Use when all commands should be deleted
-        // slash.RegisterCommands<NullCommands>();
+         // Use when commands should be refreshed
+         slash.RegisterCommands<NullCommands>();
 
         slash.RegisterCommands(typeof(DiscordCommands));
 
@@ -64,7 +64,7 @@ class Program
         };
 
 
-        await client.ConnectAsync(activity, UserStatus.DoNotDisturb);
+        await client.ConnectAsync(activity, UserStatus.Online);
 
         Thread.Sleep(Timeout.Infinite);
 
