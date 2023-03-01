@@ -1,7 +1,5 @@
 ﻿using System.Xml.Serialization;
 
-namespace ModBot;
-
 [XmlRoot(ElementName = "InitSettings")]
 public class InitSettings
 {
@@ -13,7 +11,7 @@ public class InitSettings
     public string SQLString { get; set; }
 
     [XmlElement(ElementName = "OwnerId")]
-    public ulong OwnerId { get; set; }
+    public double OwnerId { get; set; }
 }
 
 [XmlRoot(ElementName = "ModMailSettings")]
@@ -21,10 +19,10 @@ public class ModMailSettings
 {
 
     [XmlElement(ElementName = "ChannelId")]
-    public ulong ChannelId { get; set; }
+    public double ChannelId { get; set; }
 
     [XmlElement(ElementName = "DefaultModeratorRole")]
-    public ulong DefaultModeratorRole { get; set; }
+    public double DefaultModeratorRole { get; set; }
 
     [XmlElement(ElementName = "UrgencyPingLvl")]
     public int UrgencyPingLvl { get; set; }
@@ -35,7 +33,7 @@ public class ModRoles
 {
 
     [XmlElement(ElementName = "ModRoleId")]
-    public List<ulong> ModRoleIds { get; set; }
+    public List<double> ModRoleId { get; set; }
 }
 
 [XmlRoot(ElementName = "AdminRoles")]
@@ -55,6 +53,9 @@ public class BotSettings
 
     [XmlElement(ElementName = "AdminRoles")]
     public AdminRoles AdminRoles { get; set; }
+
+    [XmlElement(ElementName = "LogEditLevel")]
+    public string LogEditLevel { get; set; }
 }
 
 [XmlRoot(ElementName = "Settings")]
@@ -70,3 +71,4 @@ public class Settings
     [XmlElement(ElementName = "BotSettings")]
     public BotSettings BotSettings { get; set; }
 }
+

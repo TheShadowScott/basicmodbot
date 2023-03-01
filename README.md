@@ -60,7 +60,8 @@ Given the type checking nature of XML schema files, I decided using using an XML
 ### Example Settings.xml
 
 ```xml
-<? xml-model href="./Settings.xsd" ?>
+<?xml version="1.0"?>
+<?xml-model href="./Settings.xsd"?>
 
 <!--
 If Compiling in Visual Studio, make sure to add the above as 
@@ -89,6 +90,7 @@ These Settings ARE NOT the actual bot values.
 			<AdminRoleId>369871204976799947</AdminRoleId>
 			<AdminRoleId>024781138805157731</AdminRoleId>
 		</AdminRoles>
+		<LogEditLevel>Administrator</LogEditLevel>
 	</BotSettings>
 </Settings>
 

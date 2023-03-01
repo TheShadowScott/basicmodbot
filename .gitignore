@@ -368,3 +368,12 @@ Settings.xml
 
 # Owner files
 OwnerCommands.cs
+
+# Image Files
+*.ico
+*.png
+*.svg
+*.jpg
+*.jpeg
+*.webp
+*.tiff

@@ -4,6 +4,7 @@ using DSharpPlus;
 using DSharpPlus.SlashCommands;
 using DSharpPlus.Entities;
 using System.Xml.Serialization;
+using DSharpPlus.CommandsNext;
 
 namespace ModBot;
 
@@ -44,14 +45,24 @@ class Program
 
         var slash = client.UseSlashCommands();
 
-        slash.RegisterCommands<NullCommands>();
+        // Use when all commands should be deleted
+        // slash.RegisterCommands<NullCommands>();
+
         slash.RegisterCommands(typeof(DiscordCommands));
+
+        var commands = client.UseCommandsNext(new CommandsNextConfiguration()
+        {
+            StringPrefixes = new[] { "gf!" }
+        });
+
+        commands.RegisterCommands(typeof(OwnerCommands));
 
         DiscordActivity activity = new()
         {
             Name = "Under Devlopment",
             ActivityType = ActivityType.Playing
         };
+
 
         await client.ConnectAsync(activity, UserStatus.DoNotDisturb);
 

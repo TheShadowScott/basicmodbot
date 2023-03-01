@@ -72,9 +72,9 @@ public sealed partial class DiscordCommands : ApplicationCommandModule
     [SlashCommand("droplog", "Drops a discipline log.")]
     public async Task DropData(InteractionContext ctx, [Option("log", "Id of the log to drop (should be exactly 36 characters).")] string id)
     {
-        if (!ctx.IsAdmin())
+        if (!ctx.EditCheck())
         {
-            await ctx.CreateResponseAsync("You must have the `ManageRoles` permission to use this command", true);
+            await ctx.CreateResponseAsync("You don't have the required permissions to use this command.", true);
             return;
         }
         await ctx.CreateResponseAsync(InteractionResponseType.DeferredChannelMessageWithSource);
@@ -104,9 +104,9 @@ public sealed partial class DiscordCommands : ApplicationCommandModule
     public async Task AlterLog(InteractionContext ctx, [Option("id", "ID of the log to change")] string id, 
         [Option("reason", "The new reasoning for the warning")] string reason)
     {
-        if (!ctx.IsAdmin())
+        if (!ctx.EditCheck())
         {
-            await ctx.CreateResponseAsync("You must be an administrator for this action.", true);
+            await ctx.CreateResponseAsync("You don't have the required permissions to use this command.", true);
             return;
         }
 

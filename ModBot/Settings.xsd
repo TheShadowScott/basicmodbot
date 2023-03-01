@@ -32,22 +32,30 @@
 						</xs:sequence>
 					</xs:complexType>	
 				</xs:element>
-				<xs:element name="BotSettings" minOccurs="0">
+				<xs:element name="BotSettings">
 					<xs:complexType>
 						<xs:sequence>
-							<xs:element name="ModRoles" minOccurs="0">
+							<xs:element name="ModRoles">
 								<xs:complexType>
 									<xs:sequence>
-										<xs:element name="ModRoleId" type="xs:unsignedLong" minOccurs="1" maxOccurs="unbounded"/>
+										<xs:element name="ModRoleId" type="xs:unsignedLong" maxOccurs="unbounded"/>
 									</xs:sequence>
 								</xs:complexType>
 							</xs:element>
-							<xs:element name="AdminRoles" minOccurs="0">
+							<xs:element name="AdminRoles">
 								<xs:complexType>
 									<xs:sequence>
-										<xs:element name="AdminRoleId" type="xs:unsignedLong" minOccurs="1" maxOccurs="unbounded"/>
+										<xs:element name="AdminRoleId" type="xs:unsignedLong" maxOccurs="unbounded"/>
 									</xs:sequence>
 								</xs:complexType>
+							</xs:element>
+							<xs:element name="LogEditLevel">
+								<xs:simpleType>
+									<xs:restriction base="xs:string">
+										<xs:enumeration value="Moderator" />
+										<xs:enumeration value="Administrator" />
+									</xs:restriction>
+								</xs:simpleType>
 							</xs:element>
 						</xs:sequence>
 					</xs:complexType>

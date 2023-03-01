@@ -27,7 +27,17 @@ public static class GMethods
             if (Program.ModList.Contains(role.Id)) return true;
         return false;
     }
+    public static bool IsMod (this InteractionContext ctx)
+    {
+        if (!IsPrivate(ctx)) return false;
+        foreach (var role in ctx.Member.Roles)
+            if (Program.ModList.Contains(role.Id)) return true;
+        return false;
+    }
     private static bool IsPrivate(InteractionContext ctx) => ctx.Channel.IsPrivate;
 
     public static bool IsAdmin(this InteractionContext ctx) => !IsPrivate(ctx) && ctx.Member.Permissions.HasPermission(Permissions.Administrator);
+    public static bool EditCheck(this InteractionContext ctx) =>
+    Program.LocalSettings.BotSettings.LogEditLevel == "Administrator" ?
+        ctx.IsAdmin() : ctx.IsMod();
 }

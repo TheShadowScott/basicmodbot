@@ -130,7 +130,7 @@ public sealed partial class DiscordCommands : ApplicationCommandModule
             await ExecCommand("NICK", user.Id, reason + $" (Name changed to {name} from {user.Username}.)", ctx.User);
 
             await ctx.EditResponseAsync(new DiscordWebhookBuilder().AddEmbed(
-                QuickCreate.QuickEmbed(@$"Changed the nickname for <@{user.Id}> ({user.Username}) to {name} for {reason}.", 0x555555)
+                QuickCreate.QuickEmbed(@$"Changed the nickname for <@{user.Id}> ({user.Username}) to {name} for: `{reason.Replace("`", "\\`")}`.", 0x555555)
                 ));
         }
         catch (Exception e)
