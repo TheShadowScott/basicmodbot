@@ -55,7 +55,7 @@ CREATE TABLE user_warnings(
 ```
 
 ## Settings.xml
-Given the type checking nature of XML schema files, I decided using using an XML file for settings would be more fitting for this bot than a `.env` file. The full schema can be found in [Settings.xsd](./ModBot/Settings.xsd). _(The Settings.xml is not present in this repo given it's customisable and private nature. An example is provided below.)_
+Given the type checking nature of XML schema files, I decided using using an XML file for settings would be more fitting for this bot than a `.env` file. The full schema can be found in [Settings.xsd](./ModBot/Settings.xsd). _(The Settings.xml is not present in this repo given its customisable and private nature. An example is provided below.)_
 
 ### Example Settings.xml
 
