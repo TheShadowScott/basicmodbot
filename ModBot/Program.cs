@@ -1,8 +1,9 @@
-﻿using System;
+﻿global using System;
+global using DSharpPlus;
+global using DSharpPlus.SlashCommands;
+global using DSharpPlus.Entities;
+global using DSharpPlus.SlashCommands.Attributes;
 using static ModBot.DatabaseCommands;
-using DSharpPlus;
-using DSharpPlus.SlashCommands;
-using DSharpPlus.Entities;
 using System.Xml.Serialization;
 using DSharpPlus.CommandsNext;
 
@@ -38,7 +39,7 @@ class Program
             AutoReconnect = true,
             MinimumLogLevel = Microsoft.Extensions.Logging.LogLevel.Debug,
             LogTimestampFormat = "dd MMM yyyy - HH:mm:ss.fff zzz",
-            Intents = DiscordIntents.AllUnprivileged | DiscordIntents.GuildPresences,
+            Intents = DiscordIntents.AllUnprivileged | DiscordIntents.GuildPresences | DiscordIntents.MessageContents,
         };
 
         var client = new DiscordClient(config);
@@ -46,7 +47,7 @@ class Program
         var slash = client.UseSlashCommands();
 
          // Use when commands should be refreshed
-         slash.RegisterCommands<NullCommands>();
+        slash.RegisterCommands<NullCommands>();
 
         slash.RegisterCommands(typeof(DiscordCommands));
 
@@ -66,6 +67,42 @@ class Program
 
         await client.ConnectAsync(activity, UserStatus.Online);
 
+        #region "Client Logging"
+        client.MessageUpdated += async (s, e) =>
+        {
+            if (e.Guild is null || e.Guild.Id != LocalSettings.BotSettings.MainServerId)
+                return;
+            await s.SendMessageAsync(await s.GetChannelAsync(LocalSettings.BotSettings.LogChannelId), new DiscordEmbedBuilder()
+                 .WithTitle($"Message Edited in <#{e.Channel.Id}>")
+                 .WithDescription($"***Old Content:***\n{e.MessageBefore.Content}\n***New Content:***\n{e.Message.Content}")
+                 .WithColor(new DiscordColor(0xBD10E0))
+                 .WithTimestamp(DateTimeOffset.UtcNow)
+                 .WithAuthor(
+                     name: e.Message.Author.Username,
+                     iconUrl: e.Message.Author.AvatarUrl
+                 )
+                 .AddField("User ID", e.Message.Author.Id.ToString(), true)
+                 .AddField("Message ID", e.Message.Id.ToString(), true));
+        };
+
+        client.MessageDeleted += async (s, e) =>
+        {
+            if (e.Guild is null||e.Guild.Id != LocalSettings.BotSettings.MainServerId)
+                return;
+            await s.SendMessageAsync(await s.GetChannelAsync(LocalSettings.BotSettings.LogChannelId), new DiscordEmbedBuilder()
+                 .WithTitle($"Message Deleted in <#{e.Channel.Id}>")
+                 .WithDescription(e.Message.Content)
+                 .WithColor(new DiscordColor(0xBD10E0))
+                 .WithTimestamp(DateTimeOffset.UtcNow)
+                 .WithAuthor(
+                     name: e.Message.Author.Username,
+                     iconUrl: e.Message.Author.AvatarUrl
+                 )
+                 .AddField("User ID", $"{e.Message.Author.Id}", true)
+                 .AddField("Message ID", e.Message.Id.ToString(), true));
+        };
+
+        #endregion
         Thread.Sleep(Timeout.Infinite);
 
     }

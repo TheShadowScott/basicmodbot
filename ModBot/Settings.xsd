@@ -57,6 +57,8 @@
 									</xs:restriction>
 								</xs:simpleType>
 							</xs:element>
+							<xs:element type="xs:unsignedLong" name="LogChannelId"/>
+							<xs:element type="xs:unsignedLong" name="MainServerId" />
 						</xs:sequence>
 					</xs:complexType>
 				</xs:element>

@@ -1,18 +1,11 @@
-﻿using DSharpPlus.Entities;
-using DSharpPlus;
-using DSharpPlus.SlashCommands;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using DiscordBot;
+﻿using DiscordBot;
 using System.Globalization;
 using static ModBot.DatabaseCommands;
 
 namespace ModBot;
 public sealed partial class DiscordCommands : ApplicationCommandModule
 {
+    [SlashRequireGuild()]
     [SlashCommand("fetch", "Fetches a user's discipline logs.")]
     public async Task FetchUser(InteractionContext ctx, [Option("user", "User to access")] DiscordUser user)
     {
@@ -45,7 +38,7 @@ public sealed partial class DiscordCommands : ApplicationCommandModule
                 var warnings = new DiscordEmbedBuilder();
                 try
                 {
-                    foreach ((string id, string type, long _, long perp, string reason, string timestamp) in item)
+                    foreach ((string id, string type, _, long perp, string reason, string timestamp) in item)
                     {
                         warnings.AddField(type, $"**Actor**: <@{perp}> -  {perp}\n**Reason**: {reason}\n**Time**: <t:{((DateTimeOffset)DateTime.Parse(timestamp)).ToUnixTimeSeconds()}:F>\n**Id No**: {id}");
                     }
@@ -69,6 +62,7 @@ public sealed partial class DiscordCommands : ApplicationCommandModule
             await ctx.CreateResponseAsync("Something Went Wrong");
         }
     }
+    [SlashRequireGuild()]
     [SlashCommand("droplog", "Drops a discipline log.")]
     public async Task DropData(InteractionContext ctx, [Option("log", "Id of the log to drop (should be exactly 36 characters).")] string id)
     {
@@ -81,6 +75,7 @@ public sealed partial class DiscordCommands : ApplicationCommandModule
         await Drop(id);
         await ctx.EditResponseAsync(new DiscordWebhookBuilder().WithContent($"Log with id `{id}` has been DROPPED and is no longer accessable."));
     }
+    [SlashRequireGuild()]
     [SlashCommand("note", "Adds a note to a user.")]
     public async Task Note(InteractionContext ctx, [Option("user", "User to issue the warning to.")] DiscordUser user,
         [Option("note", "Note to add to the user.")] string note)
@@ -100,6 +95,7 @@ public sealed partial class DiscordCommands : ApplicationCommandModule
         await ctx.EditResponseAsync(new DiscordWebhookBuilder().AddEmbed(embed));
 
     }
+    [SlashRequireGuild()]
     [SlashCommand("alterlog", "Alters an existing log.")]
     public async Task AlterLog(InteractionContext ctx, [Option("id", "ID of the log to change")] string id, 
         [Option("reason", "The new reasoning for the warning")] string reason)
@@ -126,21 +122,16 @@ public sealed partial class DiscordCommands : ApplicationCommandModule
     [SlashCommand("userinfo", "Grabs information about a user.")]
     public async Task UserInfo(InteractionContext ctx, [Option("user", "User to grab the info for.")] DiscordUser user = null!)
     {
-        if (ctx.Channel.IsPrivate || ((user.Id != ctx.User.Id) && !(ctx.Member.IsMod())))
-        {
-            await ctx.CreateResponseAsync("You aren't able to do that here.", true);
-            return;
-        }
         user ??= ctx.User;
         var member = user as DiscordMember;
         var embed = new DiscordEmbedBuilder()
             .WithTitle("User Information")
             .WithDescription($"<@{user.Id}> - {user.Id}")
-            .AddField("Server Join Date", $"<t:{member?.JoinedAt.ToUnixTimeSeconds()}:F>", true)
-            .AddField("Discord Join Date", $"<t:{member?.CreationTimestamp.ToUnixTimeSeconds()}:F>", true)
-            .AddField("Roles", string.Join(' ', member?.Roles.OrderBy(i => i.Name).Select(x => $"<@&{x.Id}>").Take(20).ToList() ?? new() { "No roles" }))
-            .WithThumbnail(user.AvatarUrl);
-        
+            .AddField("Discord Join Date", $"<t:{user?.CreationTimestamp.ToUnixTimeSeconds()}:F>", true)
+            .WithThumbnail((member ?? user)?.AvatarUrl);
+        if (member is not null)
+            embed.AddField("Server Join Date", $"<t:{member?.JoinedAt.ToUnixTimeSeconds()}:F>", true)
+                .AddField("Roles", string.Join(' ', member?.Roles.OrderBy(i => i.Name).Select(x => $"<@&{x.Id}>").Take(20).ToList() ?? new() { "No roles" }));
 
         await ctx.CreateResponseAsync(embed);
     }

@@ -1,15 +1,6 @@
-﻿using DSharpPlus;
-using static System.Environment;
-using DSharpPlus.SlashCommands;
-using DSharpPlus.Entities;
-using System.Diagnostics;
-using System.Globalization;
+﻿using DiscordBot;
 using static ModBot.DatabaseCommands;
-using DiscordBot;
-using Microsoft.Win32.SafeHandles;
-using System.Security.Cryptography.X509Certificates;
-using DSharpPlus.CommandsNext.Attributes;
-using System.Diagnostics.Metrics;
+using static System.Environment;
 
 namespace ModBot;
 public sealed partial class DiscordCommands : ApplicationCommandModule
@@ -50,6 +41,7 @@ public sealed partial class DiscordCommands : ApplicationCommandModule
         await channel.SendMessageAsync(msg);
         await ctx.CreateResponseAsync("Message sent!");
     }
+    [SlashRequireGuild]
     [SlashCommand("addrole", "Adds a role to a user.")]
     public static async Task AddRole(InteractionContext ctx, [Option("user", "User to give the role to")] DiscordUser user,
         [Option("role", "Role to give the user")] DiscordRole role,
@@ -76,6 +68,7 @@ public sealed partial class DiscordCommands : ApplicationCommandModule
 
         await ctx.EditResponseAsync(new DiscordWebhookBuilder().WithContent($"Successfully gave <@{user.Id}> the <@&{role.Id}> role!"));
     }
+    [SlashRequireGuild]
     [SlashCommand("removerole", "Adds a role to a user.")]
     public static async Task Remove(InteractionContext ctx, [Option("user", "User to give the role to")] DiscordUser user,
         [Option("role", "Role to give the user")] DiscordRole role,
@@ -101,7 +94,7 @@ public sealed partial class DiscordCommands : ApplicationCommandModule
             if (log)
                 await ExecCommand("RROLE", user.Id, role.Id.ToString(), ctx.User);
 
-            await ctx.EditResponseAsync(new DiscordWebhookBuilder().WithContent($"Successfully removed the <@&{role.Id}> role from <@{user.Id}>!"));
+            await ctx.EditResponseAsync(new DiscordWebhookBuilder().WithContent($"Successfully rem oved the <@&{role.Id}> role from <@{user.Id}>!"));
         }
         catch (Exception e)
         {
@@ -109,6 +102,7 @@ public sealed partial class DiscordCommands : ApplicationCommandModule
             Console.WriteLine(e);
         }
     }
+    [SlashRequireGuild]
     [SlashCommand("rename", "Sets the nickname of a member")]
     public static async Task Nick(InteractionContext ctx, [Option("user", "User to rename.")] DiscordUser user, [Option("name", "Name to change to")] string name,
         [Option("reason", "Reason for the name change")] string reason)

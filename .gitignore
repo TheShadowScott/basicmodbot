@@ -366,9 +366,6 @@ FodyWeavers.xsd
 Settings.xml
 .env
 
-# Owner files
-OwnerCommands.cs
-
 # Image Files
 *.ico
 *.png

@@ -11,7 +11,7 @@ public class InitSettings
     public string SQLString { get; set; }
 
     [XmlElement(ElementName = "OwnerId")]
-    public double OwnerId { get; set; }
+    public ulong OwnerId { get; set; }
 }
 
 [XmlRoot(ElementName = "ModMailSettings")]
@@ -19,10 +19,10 @@ public class ModMailSettings
 {
 
     [XmlElement(ElementName = "ChannelId")]
-    public double ChannelId { get; set; }
+    public ulong ChannelId { get; set; }
 
     [XmlElement(ElementName = "DefaultModeratorRole")]
-    public double DefaultModeratorRole { get; set; }
+    public ulong DefaultModeratorRole { get; set; }
 
     [XmlElement(ElementName = "UrgencyPingLvl")]
     public int UrgencyPingLvl { get; set; }
@@ -56,6 +56,12 @@ public class BotSettings
 
     [XmlElement(ElementName = "LogEditLevel")]
     public string LogEditLevel { get; set; }
+
+    [XmlElement(ElementName = "LogChannelId")]
+    public ulong LogChannelId { get; set; }
+
+    [XmlElement(ElementName = "MainServerId")]
+    public ulong MainServerId { get; set; }
 }
 
 [XmlRoot(ElementName = "Settings")]
@@ -71,4 +77,3 @@ public class Settings
     [XmlElement(ElementName = "BotSettings")]
     public BotSettings BotSettings { get; set; }
 }
-

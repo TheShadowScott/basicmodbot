@@ -20,7 +20,7 @@ public static class GMethods
     }
     public static bool CheckPermissions(this InteractionContext ctx,
        Permissions perms) =>
-            ctx.Channel.IsPrivate ? false : ctx.Member.Permissions.HasPermission(perms) || IsMod(ctx.Member);
+            ctx.Member.Permissions.HasPermission(perms) || IsMod(ctx.Member);
     public static bool IsMod(this DiscordMember member)
     {
         foreach (var role in member.Roles)
@@ -29,7 +29,6 @@ public static class GMethods
     }
     public static bool IsMod (this InteractionContext ctx)
     {
-        if (!IsPrivate(ctx)) return false;
         foreach (var role in ctx.Member.Roles)
             if (Program.ModList.Contains(role.Id)) return true;
         return false;
