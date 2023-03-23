@@ -4,7 +4,7 @@ namespace ModBot;
 public sealed partial class DiscordCommands : ApplicationCommandModule
 {
     [SlashCommand("modmail", "Starts a new modmail forum channel.")]
-    public static async Task NewModMail(InteractionContext ctx, string name, string message)
+    public static async Task NewModMail(InteractionContext ctx, [Option("name", "Title for modmail")]string name, [Option("message", "Message to send.")]string message)
     {
         await ctx.CreateResponseAsync(InteractionResponseType.DeferredChannelMessageWithSource);
         try

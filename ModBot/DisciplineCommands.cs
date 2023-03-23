@@ -62,10 +62,18 @@ public sealed partial class DiscordCommands : ApplicationCommandModule
             return;
         }
         await ctx.CreateResponseAsync(InteractionResponseType.DeferredChannelMessageWithSource);
-        await (user as DiscordMember)!.SendMessageAsync(QuickCreate.QuickEmbed(@$"You have been banned from {ctx.Guild.Name} for: `{reason.Replace("`", "\\`")}`", 0xC70039));
-        await (user as DiscordMember)!.BanAsync((int)days, reason);
-        await ExecCommand("BAN", user.Id, reason, ctx.User);
-        await ctx.EditResponseAsync(new DiscordWebhookBuilder().AddEmbed(QuickCreate.QuickEmbed($"<@{user.Id}> has been banned for: `{reason.Replace("`", "\\`")}`.\n\nAdditionally I deleted {days} days of messages.", 0xC70039)));
+        try
+        {
+            await (user as DiscordMember)?.SendMessageAsync(QuickCreate.QuickEmbed(@$"You have been banned from {ctx.Guild.Name} for: `{reason.Replace("`", "\\`")}`", 0xC70039))!;
+            await ctx.Guild.BanMemberAsync(user.Id);
+            await ExecCommand("BAN", user.Id, reason, ctx.User);
+            await ctx.EditResponseAsync(new DiscordWebhookBuilder().AddEmbed(QuickCreate.QuickEmbed($"<@{user.Id}> has been banned for: `{reason.Replace("`", "\\`")}`.\n\nAdditionally I deleted {days} days of messages.", 0xC70039)));
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex);
+            await ctx.EditResponseAsync(new DiscordWebhookBuilder().WithContent("Something went wrong"));
+        }
     }
     [SlashCommand("unban", "Unbans a user")]
     public async Task UnbanUser(InteractionContext ctx, [Option("user", "User to unban")] DiscordUser user, 
