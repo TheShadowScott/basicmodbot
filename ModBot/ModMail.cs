@@ -23,6 +23,7 @@ public sealed partial class DiscordCommands : ApplicationCommandModule
                 .WithName(name)
                 .WithMessage(msgBuilder)
                 )!;
+            ctx.EditResponseAsync(new DiscordWebhookBuilder().WithContent("Successfully created the modmail ticket. Staff will be with you shortly."));
         }
         catch (Exception ex)
         {
