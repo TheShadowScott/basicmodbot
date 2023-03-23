@@ -19,7 +19,7 @@ static class DatabaseCommands
         List<(string, string, long, long, string, string)> warnings = new();
         try
         {
-            using (SqlConnection conn = new(Environment.GetEnvironmentVariable("CONN_STRING")))
+            using (SqlConnection conn = new(Program.LocalSettings.InitSettings.SQLString))
             {
                 conn.Open();
 
@@ -45,7 +45,7 @@ static class DatabaseCommands
     {
         try
         {
-            using SqlConnection conn = new(Environment.GetEnvironmentVariable("CONN_STRING"));
+            using SqlConnection conn = new(Program.LocalSettings.InitSettings.SQLString);
             conn.Open();
 
             SqlCommand cmd = new("INSERT INTO user_warnings VALUES (@GUID, @type, @userid, @perpid, @reason, @time);", conn);
@@ -71,7 +71,7 @@ static class DatabaseCommands
     {
         try
         {
-            using (SqlConnection conn = new(Environment.GetEnvironmentVariable("CONN_STRING")))
+            using (SqlConnection conn = new(Program.LocalSettings.InitSettings.SQLString))
             {
                 conn.Open();
                 SqlCommand cmd = new("UPDATE user_warnings SET WarningReason = @reason WHERE Id = @id", conn);
@@ -90,7 +90,7 @@ static class DatabaseCommands
     {
         try
         {
-            using (SqlConnection conn = new(Environment.GetEnvironmentVariable("CONN_STRING")))
+            using (SqlConnection conn = new(Program.LocalSettings.InitSettings.SQLString))
             {
                 conn.Open();
                 SqlCommand cmd = new("DELETE FROM user_warnings WHERE Id = @id", conn);
