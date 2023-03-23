@@ -52,9 +52,9 @@ public sealed partial class DiscordCommands : ApplicationCommandModule
         await ctx.EditResponseAsync(new DiscordWebhookBuilder().AddEmbed(QuickCreate.QuickEmbed(@$"<@{user.Id}> has been kicked for: `{reason.Replace("`", "\\`")}`", 0xDf9449)));
     }
     [SlashCommand("ban", "Bans a User")]
-    public async Task BanUser(InteractionContext ctx, [Option("user", "User to ban.")] DiscordUser user, 
-        [Option("days", "Days of messges to delete")] long days = 0,
-        [Option("reason", "Reason to ban")] string reason = "No reason provided")
+    public async Task BanUser(InteractionContext ctx, [Option("user", "User to ban.")] DiscordUser user,
+        [Option("reason", "Reason to ban")] string reason = "No reason provided",
+        [Option("days", "Days of messges to delete")] long days = 0)
     {
         if (!ctx.CheckPermissions(Permissions.BanMembers))
         {

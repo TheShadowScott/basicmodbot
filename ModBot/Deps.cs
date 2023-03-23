@@ -20,7 +20,7 @@ public static class GMethods
     }
     public static bool CheckPermissions(this InteractionContext ctx,
        Permissions perms) =>
-            ctx.Member.Permissions.HasPermission(perms) || IsMod(ctx.Member);
+            ctx.Member.Permissions.HasPermission(perms) || IsAdmin(ctx) || IsMod(ctx.Member);
     public static bool IsMod(this DiscordMember member)
     {
         foreach (var role in member.Roles)
@@ -39,4 +39,13 @@ public static class GMethods
     public static bool EditCheck(this InteractionContext ctx) =>
     Program.LocalSettings.BotSettings.LogEditLevel == "Administrator" ?
         ctx.IsAdmin() : ctx.IsMod();
+
+    public static string? ToDiscordRoleDisplayString(this IEnumerable<DiscordRole> roleList)
+    {
+        var sb = new StringBuilder();
+        foreach (var role in roleList)
+            sb.Append(@$"<@&{role.Id}> ");
+        sb.Length--;
+        return sb.ToString();
+    }
 }

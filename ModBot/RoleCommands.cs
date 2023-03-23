@@ -5,42 +5,6 @@ using static System.Environment;
 namespace ModBot;
 public sealed partial class DiscordCommands : ApplicationCommandModule
 {
-    public enum UrgencyLevel
-    {
-        Low = 1,
-        Normal = 2,
-        High = 3,
-        Urgent = 4
-    }
-    [SlashCommand("modmail", "Sends a message to the server moderators.")]
-    public static async Task ModMail(InteractionContext ctx, [Option("urgency", "Urgency of message")] UrgencyLevel urgency,
-        [Option("message", "Message to send to the moderators")] string message)
-    {
-        var channel = await ctx.Client.GetChannelAsync((ulong)Convert.ToInt64(GetEnvironmentVariable("MODMAIL_CHANNEL_ID")));
-
-        var embed = new DiscordEmbedBuilder()
-            .WithAuthor('@' + ctx.User.Username)
-            .WithTimestamp(DateTimeOffset.UtcNow)
-            .WithDescription(message)
-            .WithColor(
-                (int)urgency switch
-                {
-                    4 => 0x72286f,
-                    3 => 0xb80f0a,
-                    2 => 0x933b17,
-                    1 => 0xffdf00,
-                    _ => 0xffffff
-                }
-            );
-
-        var msg = new DiscordMessageBuilder()
-            .WithEmbed(embed);
-        if ((int)urgency >= Convert.ToInt32(GetEnvironmentVariable("URGENCY_PING_LEVEL")))
-            msg.WithContent($"<@&{GetEnvironmentVariable("MOD_ROLE_ID")}>");
-
-        await channel.SendMessageAsync(msg);
-        await ctx.CreateResponseAsync("Message sent!");
-    }
     [SlashRequireGuild]
     [SlashCommand("addrole", "Adds a role to a user.")]
     public static async Task AddRole(InteractionContext ctx, [Option("user", "User to give the role to")] DiscordUser user,
