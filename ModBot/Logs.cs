@@ -107,7 +107,8 @@ internal static class Logging
                     return;
                 await sender.SendMessageAsync(await sender.GetChannelAsync(LogChannel), new DiscordEmbedBuilder()
                      .WithTitle("Member Join")
-                     .WithDescription($"{@event.Member.DisplayName} ({@event.Member.Id})")
+                     .WithDescription($"{@event.Member.DisplayName}{(@event.Member.Discriminator is not "0" or null ?
+                    '#' + @event.Member.Discriminator : "")} ({@event.Member.Id})")
                      .WithColor(new DiscordColor(0xBD10E0))
                      .WithTimestamp(Now)
                      .WithThumbnail(url: @event.Member.AvatarUrl)
@@ -131,7 +132,8 @@ internal static class Logging
                     return;
                 await sender.SendMessageAsync(await sender.GetChannelAsync(LogChannel), new DiscordEmbedBuilder()
                     .WithTitle("Member Left")
-                    .WithDescription(@$"{@event.Member.DisplayName}" + '#' + $"{@event.Member.Discriminator} ({@event.Member.Id})")
+                    .WithDescription(@$"{@event.Member.DisplayName}{(@event.Member.Discriminator is not "0" or null ? 
+                    '#' + @event.Member.Discriminator : "")} ({@event.Member.Id})")
                     .WithColor(new DiscordColor(0xBD10E0))
                     .WithTimestamp(Now)
                     .WithThumbnail(url: @event.Member.AvatarUrl)
@@ -156,16 +158,20 @@ internal static class Logging
                 {
                     if (@event.Guild.Id != MainServerId)
                         return;
-                    if (!@event.RolesAfter.SequenceEqual(@event.RolesBefore))
-                    {
-                        await sender.SendMessageAsync(await sender.GetChannelAsync(LogChannel), new DiscordEmbedBuilder()
-                            .WithTitle("Member Roles Updated")
-                            .WithAuthor(name: @event.Member.Username + '#' + @event.Member.Discriminator, iconUrl: @event.Member.AvatarUrl)
-                            .WithDescription($"***Roles Added:*** {Enumerable.Except(@event.RolesBefore, @event.RolesAfter).ToDiscordRoleDisplayString()}" +
-                                $"\n***Roles Removed:*** {Enumerable.Except(@event.RolesAfter, @event.RolesBefore).ToDiscordRoleDisplayString()}")
-                            .WithColor(new DiscordColor(0xBD10E0))
-                            .WithTimestamp(Now));
-                    }
+                    IEnumerable<DiscordRole> rBefore = @event.MemberBefore.Roles,
+                                             rAfter = @event.MemberAfter.Roles;
+                    if (rBefore.SequenceEqual(rAfter))
+                        return;
+
+                    await sender.SendMessageAsync(await sender.GetChannelAsync(LogChannel), new DiscordEmbedBuilder()
+                        .WithTitle("Member Roles Updated")
+                        .WithAuthor(name: @$"{@event.Member.DisplayName}{(@event.Member.Discriminator is not "0" or null ?
+                            '#' + @event.Member.Discriminator : "")} ({@event.Member.Id})", 
+                            iconUrl: @event.Member.AvatarUrl)
+                        .WithDescription($" ***Roles Added:*** {Enumerable.Except(rBefore, rAfter).ToDiscordRoleDisplayString()}" +
+                            $"\n***Roles Removed:*** {Enumerable.Except(rAfter, rBefore).ToDiscordRoleDisplayString()}")
+                        .WithColor(new DiscordColor(0xBD10E0))
+                        .WithTimestamp(Now));
                 };
             }
             if (enableDisplayNameUpdates)
@@ -178,7 +184,9 @@ internal static class Logging
                     {
                         await sender.SendMessageAsync(await sender.GetChannelAsync(LogChannel), new DiscordEmbedBuilder()
                             .WithTitle("Changed Nickname")
-                            .WithAuthor(name: @event.Member.Username + '#' + @event.Member.Discriminator, iconUrl: @event.Member.AvatarUrl)
+                            .WithAuthor(name: @$"{@event.Member.DisplayName}{(@event.Member.Discriminator is not "0" or null ?
+                                '#' + @event.Member.Discriminator : "")} ({@event.Member.Id})",
+                                iconUrl: @event.Member.AvatarUrl)
                             .WithDescription($"***Old Nickname:*** {@event.MemberBefore.Nickname}\n***New Nickname:*** {@event.MemberAfter.Nickname}")
                             .WithColor(new DiscordColor(0xBD10E0))
                             .WithTimestamp(Now));

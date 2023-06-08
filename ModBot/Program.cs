@@ -47,8 +47,8 @@ class Program
 
         var slash = client.UseSlashCommands();
 
-         // Use when commands should be refreshed
-        slash.RegisterCommands<NullCommands>();
+        // Use when commands should be refreshed
+        // slash.RegisterCommands<NullCommands>();
 
         slash.RegisterCommands(typeof(DiscordCommands));
 
