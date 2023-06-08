@@ -65,7 +65,8 @@ public sealed partial class DiscordCommands : ApplicationCommandModule
         try
         {     
             await ExecCommand("BAN", user.Id, reason, ctx.User);
-            await (user as DiscordMember)?.SendMessageAsync(QuickCreate.QuickEmbed(@$"You have been banned from {ctx.Guild.Name} for: `{reason.Replace("`", "\\`")}`", 0xC70039))!;
+            if (user as DiscordMember is not null)
+              await (user as DiscordMember)?.SendMessageAsync(QuickCreate.QuickEmbed(@$"You have been banned from {ctx.Guild.Name} for: `{reason.Replace("`", "\\`")}`", 0xC70039))!;
         }
         catch (Exception ex)
         {
