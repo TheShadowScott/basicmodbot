@@ -46,7 +46,8 @@ internal static class Logging
                      .WithColor(new DiscordColor(0xBD10E0))
                      .WithTimestamp(DateTimeOffset.UtcNow)
                      .WithAuthor(
-                         name: @event.Message.Author.Username + '#' + @event.Message.Author.Discriminator,
+                         name: $"{@event.Message.Author.Username}{(@event.Message.Author.Discriminator is not "0" or null ?
+                         '#' + @event.Message.Author.Discriminator : "")}",
                          iconUrl: @event.Message.Author.AvatarUrl
                      )
                      .AddField("User ID", $"{@event.Message.Author.Id}", true)
@@ -79,7 +80,8 @@ internal static class Logging
                      .WithColor(new DiscordColor(0xBD10E0))
                      .WithTimestamp(Now)
                      .WithAuthor(
-                         name: @event.Message.Author.Username + '#' + @event.Message.Author.Discriminator,
+                         name: $"{@event.Message.Author.Username}{(@event.Message.Author.Discriminator is not "0" or null ?
+                    '#' + @event.Message.Author.Discriminator : "")}",
                          iconUrl: @event.Message.Author.AvatarUrl
                      )
                      .AddField("User ID", @event.Message.Author.Id.ToString(), true)
