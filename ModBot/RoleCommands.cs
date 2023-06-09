@@ -42,7 +42,7 @@ public sealed partial class DiscordCommands : ApplicationCommandModule
         {
             await ctx.CreateResponseAsync("You need the `Manage Roles` permission to use this command.");
             return;
-        }
+        }+
 
         if (!((user as DiscordMember)!.Roles.Contains(role)))
         {
@@ -53,12 +53,12 @@ public sealed partial class DiscordCommands : ApplicationCommandModule
         await ctx.CreateResponseAsync(InteractionResponseType.DeferredChannelMessageWithSource);
         try
         {
-            await (user as DiscordMember)!.GrantRoleAsync(role);
+            await (user as DiscordMember)!.RevokeRoleAsync(role);
 
             if (log)
                 await ExecCommand("RROLE", user.Id, role.Id.ToString(), ctx.User);
 
-            await ctx.EditResponseAsync(new DiscordWebhookBuilder().WithContent($"Successfully rem oved the <@&{role.Id}> role from <@{user.Id}>!"));
+            await ctx.EditResponseAsync(new DiscordWebhookBuilder().WithContent($"Successfully removed the <@&{role.Id}> role from <@{user.Id}>!"));
         }
         catch (Exception e)
         {
