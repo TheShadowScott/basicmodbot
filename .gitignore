@@ -374,3 +374,9 @@ Settings.xml
 *.jpeg
 *.webp
 *.tiff
+
+
+# VS Code files
+*/.vscode/*
+.vscode/*
+*.sln

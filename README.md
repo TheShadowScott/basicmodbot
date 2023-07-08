@@ -73,7 +73,7 @@ These Settings ARE NOT the actual bot values.
 <Settings>
 	<InitSettings>
 		<BotId>Cc1Wbj5r7Fe7HYe1A5an0Zn6.Adw24d.QMo4K0hQTAY8jhNUpPzoGKCZf8uUC4o9hhPygQ</BotId>
-		<SQLString>Data Source=SRC;Initial Catalog=Satabase;Integrated Security=True</SQLString>
+		<SQLString>Data Source=SRC;Initial Catalog=Database;Integrated Security=True</SQLString>
 		<OwnerId>312781867949556946</OwnerId>
 	</InitSettings>
 	<ModMailSettings>
