@@ -31,6 +31,7 @@ class Program
     static async Task Main()
     {
         LoadSettings();
+        LocalSettings.InitDeveloperSettings();
 
         var config = new DiscordConfiguration()
         {

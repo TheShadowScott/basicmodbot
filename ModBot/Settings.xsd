@@ -60,6 +60,7 @@
 							<xs:element name="DeveloperAccessLevel" minOccurs="0">
 								<xs:simpleType>
 									<xs:restriction base="xs:string">
+										<xs:enumeration value="None"></xs:enumeration>
 										<xs:enumeration value="Moderator" />
 										<xs:enumeration value="Administrator" />
 										<xs:enumeration value="Owner" />

@@ -62,6 +62,10 @@ public class BotSettings
 
     [XmlElement(ElementName = "MainServerId")]
     public ulong MainServerId { get; set; }
+    [XmlElement(ElementName = "DeveloperAccessLevel")]
+    public string? DeveloperAccessLevel { get; set; }
+    [XmlElement(ElementName = "DeveloperRoleId")]
+    public ulong? DeveloperRoleId { get; set; }
 }
 
 [XmlRoot(ElementName = "Settings")]
@@ -76,5 +80,22 @@ public class Settings
 
     [XmlElement(ElementName = "BotSettings")]
     public BotSettings BotSettings { get; set; }
+    public void InitDeveloperSettings()
+    {
+        if (BotSettings?.DeveloperAccessLevel is null || BotSettings?.DeveloperRoleId is null)
+            return;
+        switch (BotSettings?.DeveloperAccessLevel)
+        {
+            case "Owner":
+            case "Admin":
+                BotSettings.AdminRoles.AdminRoleId.Add((ulong)BotSettings.DeveloperRoleId);
+                break;
+            case "Mod":
+                BotSettings.ModRoles.ModRoleId.Add((ulong)BotSettings.DeveloperRoleId);
+                break;
+            default:
+                break;
+        }
+    }
 }
 #pragma warning restore 8618
