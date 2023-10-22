@@ -375,3 +375,9 @@ settings.json
 *.jpeg
 *.webp
 *.tiff
+
+
+# VS Code files
+*/.vscode/*
+.vscode/*
+*.sln
