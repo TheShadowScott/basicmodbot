@@ -1,12 +1,4 @@
-﻿using DSharpPlus;
-using DSharpPlus.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using DSharpPlus.SlashCommands;
-using System.Text.RegularExpressions;
+﻿using System.Text;
 
 namespace ModBot;
 public static class GMethods

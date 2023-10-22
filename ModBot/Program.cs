@@ -3,10 +3,8 @@ global using DSharpPlus;
 global using DSharpPlus.SlashCommands;
 global using DSharpPlus.Entities;
 global using DSharpPlus.SlashCommands.Attributes;
-using static ModBot.DatabaseCommands;
 using System.Xml.Serialization;
 using DSharpPlus.CommandsNext;
-using static ModBot.Logging;
 
 namespace ModBot;
 

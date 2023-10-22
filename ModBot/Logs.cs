@@ -1,14 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Text;
 using static ModBot.Program;
 using static ModBot.GMethods;
-using DSharpPlus;
-using DSharpPlus.EventArgs;
-using System.Text.RegularExpressions;
-using System.ComponentModel.DataAnnotations;
 
 namespace ModBot;
 internal static partial class Logging

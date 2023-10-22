@@ -1,6 +1,5 @@
 ﻿using DiscordBot;
 using static ModBot.DatabaseCommands;
-using static System.Environment;
 
 namespace ModBot;
 public sealed partial class DiscordCommands : ApplicationCommandModule
