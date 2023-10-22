@@ -7,7 +7,7 @@ public sealed partial class DiscordCommands : ApplicationCommandModule
 {
     [SlashRequireGuild]
     [SlashCommand("addrole", "Adds a role to a user.")]
-    public static async Task AddRole(InteractionContext ctx, [Option("user", "User to give the role to")] DiscordUser user,
+    public static async Task AddRole(InteractionContext ctx, [Option("user", "User to give a role")] DiscordUser user,
         [Option("role", "Role to give the user")] DiscordRole role,
         [Option("log", "Log this to the database?")] bool log = false)
     {
@@ -34,17 +34,17 @@ public sealed partial class DiscordCommands : ApplicationCommandModule
     }
     [SlashRequireGuild]
     [SlashCommand("removerole", "Adds a role to a user.")]
-    public static async Task Remove(InteractionContext ctx, [Option("user", "User to give the role to")] DiscordUser user,
-        [Option("role", "Role to give the user")] DiscordRole role,
+    public static async Task Remove(InteractionContext ctx, [Option("user", "User to take a role from")] DiscordUser user,
+        [Option("role", "Role to remove from the user")] DiscordRole role,
         [Option("log", "Log this to the database?")] bool log = false)
     {
         if (!ctx.CheckPermissions(Permissions.ManageRoles))
         {
             await ctx.CreateResponseAsync("You need the `Manage Roles` permission to use this command.");
             return;
-        }+
+        }
 
-        if (!((user as DiscordMember)!.Roles.Contains(role)))
+        if (!(user as DiscordMember)!.Roles.Contains(role))
         {
             await ctx.CreateResponseAsync("This user doesn't have this role!");
             return;
@@ -67,7 +67,7 @@ public sealed partial class DiscordCommands : ApplicationCommandModule
         }
     }
     [SlashRequireGuild]
-    [SlashCommand("rename", "Sets the nickname of a member")]
+    [SlashCommand("setnick", "Sets the nickname of a member")]
     public static async Task Nick(InteractionContext ctx, [Option("user", "User to rename.")] DiscordUser user, [Option("name", "Name to change to")] string name,
         [Option("reason", "Reason for the name change")] string reason)
     {

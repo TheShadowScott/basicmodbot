@@ -20,13 +20,14 @@ class Program
     private static async Task UpdateStatus(DiscordClient client, DiscordActivity activity)
         => await client.UpdateStatusAsync(activity);
     internal sealed class NullCommands : ApplicationCommandModule { }
-
     internal static Settings LocalSettings = new();
     internal static void LoadSettings()
     {
-        XmlSerializer xmlSerializer = new XmlSerializer(typeof(Settings));
+        #pragma warning disable IL2026
+        var xmlSerializer = new XmlSerializer(typeof(Settings));
         using StringReader reader = new(File.ReadAllText(@".\Settings.xml"));
         LocalSettings = (Settings)xmlSerializer.Deserialize(reader)!;
+        #pragma warning restore IL2026
     }
     internal static List<ulong> ModList => LocalSettings.BotSettings.ModRoles.ModRoleId;
     static async Task Main()
@@ -68,15 +69,15 @@ class Program
 
         await client.ConnectAsync(activity, UserStatus.Online);
 
-        #region "Client Logging"
         // Use this space to make client method calls to enable different logging methods. See ./Logs.cs for available methods.
         client.EnableAllLoggingMethods();
-        #endregion
 
         // Client error handling. Update to completeness later
+        #pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously; ClientError requires async, warning is not needed
         client.ClientErrored += async (s, e) => Console.WriteLine(e.Exception.ToString());
-        
-        Thread.Sleep(Timeout.Infinite);
+        #pragma warning restore CS1998
 
+        //NOTE - Don't use `Thread.Sleep()` again, you dumbass.
+        await Task.Delay(Timeout.Infinite);
     }
 }

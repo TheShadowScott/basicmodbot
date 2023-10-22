@@ -365,6 +365,7 @@ FodyWeavers.xsd
 # Data files
 Settings.xml
 .env
+settings.json
 
 # Image Files
 *.ico

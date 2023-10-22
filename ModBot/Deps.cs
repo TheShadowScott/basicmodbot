@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using DSharpPlus.SlashCommands;
+using System.Text.RegularExpressions;
 
 namespace ModBot;
 public static class GMethods
@@ -40,12 +41,45 @@ public static class GMethods
     Program.LocalSettings.BotSettings.LogEditLevel == "Administrator" ?
         ctx.IsAdmin() : ctx.IsMod();
 
-    public static string? ToDiscordRoleDisplayString(this IEnumerable<DiscordRole> roleList)
+    public static string? ToDiscordRoleDisplayString(this IEnumerable<DiscordRole>? roleList)
     {
+        if (roleList is null || !roleList.Any()) return null;
         var sb = new StringBuilder();
         foreach (var role in roleList)
             sb.Append(@$"<@&{role.Id}> ");
         sb.Length--;
         return sb.ToString();
+    }
+
+    public static string GetOrdinal(int input)
+    {
+        int num = input > 100 ? input % 100 : input;
+        if (num > 10 && num < 20) return "th";
+        return (num % 10) switch
+        {
+            1 => "st",
+            2 => "nd",
+            3 => "rd",
+            _ => "th"
+        };
+    }
+
+    public static string PrependBackslashBeforeChars(this string str)
+    {
+        var sb = new StringBuilder();
+        foreach (var c in str)
+            sb.Append(@$"\{c}");
+        return sb.ToString();
+    }
+    public static string AddOrdinalToDateObject(DateTimeOffset off, string format = "dddd, d MMMM yyyy HH:mm:ss")
+    {
+        if (format.Contains("dddd"))
+            format = format.Replace("dddd", "Q");
+        int day = off.Day;
+        string ord = GetOrdinal(day).PrependBackslashBeforeChars();
+
+        format = format.Replace("d", $"d{ord}").Replace("Q", "dddd");
+
+        return off.ToString(format);
     }
 }

@@ -57,6 +57,16 @@
 									</xs:restriction>
 								</xs:simpleType>
 							</xs:element>
+							<xs:element name="DeveloperAccessLevel" minOccurs="0">
+								<xs:simpleType>
+									<xs:restriction base="xs:string">
+										<xs:enumeration value="Moderator" />
+										<xs:enumeration value="Administrator" />
+										<xs:enumeration value="Owner" />
+									</xs:restriction>
+								</xs:simpleType>
+							</xs:element>
+							<xs:element type="xs:unsignedLong" name="BotDeveloperId" minOccurs="0"/>
 							<xs:element type="xs:unsignedLong" name="LogChannelId"/>
 							<xs:element type="xs:unsignedLong" name="MainServerId" />
 						</xs:sequence>

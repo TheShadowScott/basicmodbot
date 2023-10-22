@@ -1,5 +1,5 @@
 ﻿using System.Xml.Serialization;
-
+#pragma warning disable 8618
 [XmlRoot(ElementName = "InitSettings")]
 public class InitSettings
 {
@@ -77,3 +77,4 @@ public class Settings
     [XmlElement(ElementName = "BotSettings")]
     public BotSettings BotSettings { get; set; }
 }
+#pragma warning restore 8618
