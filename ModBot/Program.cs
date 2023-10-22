@@ -75,7 +75,6 @@ class Program
         client.ClientErrored += async (s, e) => Console.WriteLine(e.Exception.ToString());
         #pragma warning restore CS1998
 
-        //NOTE - Don't use `Thread.Sleep()` again, you dumbass.
         await Task.Delay(Timeout.Infinite);
     }
 }
