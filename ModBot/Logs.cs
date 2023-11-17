@@ -1,6 +1,5 @@
 ﻿using System.Text;
 using static ModBot.Program;
-using static ModBot.GMethods;
 
 namespace ModBot;
 internal static partial class Logging

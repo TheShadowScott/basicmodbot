@@ -1,6 +1,4 @@
-﻿using DSharpPlus.Entities;
-
-namespace DiscordBot;
+﻿namespace DiscordBot;
 
 public static class QuickCreate
 {

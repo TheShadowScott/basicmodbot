@@ -1,11 +1,4 @@
-﻿using DSharpPlus.SlashCommands;
-using DSharpPlus;
-using DSharpPlus.Entities;
-using DiscordBot;
-using System;
-using System.Linq;
-
-namespace ModBot;
+﻿namespace ModBot;
 
 public sealed partial class DiscordCommands
 {

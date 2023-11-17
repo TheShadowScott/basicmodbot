@@ -3,6 +3,7 @@ global using DSharpPlus;
 global using DSharpPlus.SlashCommands;
 global using DSharpPlus.Entities;
 global using DSharpPlus.SlashCommands.Attributes;
+global using static ModBot.Deps.GMethods;
 using System.Xml.Serialization;
 using DSharpPlus.CommandsNext;
 using ModBot.Deps;

@@ -1,15 +1,6 @@
-﻿using DSharpPlus;
-using static System.Environment;
-using DSharpPlus.SlashCommands;
-using DSharpPlus.Entities;
-using System.Diagnostics;
-using System.Globalization;
+﻿using System.Globalization;
 using static ModBot.DatabaseCommands;
 using DiscordBot;
-using Microsoft.Win32.SafeHandles;
-using System.Security.Cryptography.X509Certificates;
-using static System.Globalization.TextInfo;
-using static ModBot.GMethods;
 
 namespace ModBot;
 public sealed partial class DiscordCommands : ApplicationCommandModule
