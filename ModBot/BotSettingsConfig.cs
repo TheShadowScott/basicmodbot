@@ -1,5 +1,5 @@
 ﻿using System.Xml.Serialization;
-#pragma warning disable 8618
+#pragma warning disable 8618, CA1050
 [XmlRoot(ElementName = "InitSettings")]
 public class InitSettings
 {
@@ -98,4 +98,3 @@ public class Settings
         }
     }
 }
-#pragma warning restore 8618

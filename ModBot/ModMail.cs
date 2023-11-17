@@ -1,9 +1,10 @@
 ﻿using static ModBot.Program;
 namespace ModBot;
 
+//TODO - Update to use ticket system instead of forum posts
 public sealed partial class DiscordCommands : ApplicationCommandModule
 {
-    [SlashCommand("modmail", "Starts a new modmail forum channel.")]
+    [SlashCommand("modmail", "Submits a modmail ticket.")]
     public static async Task NewModMail(InteractionContext ctx, [Option("name", "Title for modmail")]string name, [Option("message", "Message to send.")]string message)
     {
         await ctx.CreateResponseAsync(InteractionResponseType.DeferredChannelMessageWithSource);

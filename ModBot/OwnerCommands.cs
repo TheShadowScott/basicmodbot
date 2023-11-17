@@ -1,4 +1,5 @@
-﻿using DSharpPlus.CommandsNext;
+﻿using System.Text;
+using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Attributes;
 
 namespace ModBot;
@@ -65,5 +66,29 @@ public sealed class OwnerCommands : BaseCommandModule
         Console.ResetColor();
         await ctx.Client.DisconnectAsync();
         ctx.Client.Dispose();
+    }
+    [Command("restart")]
+    public async Task Restart(CommandContext ctx)
+    {
+        if (!IsOwner(ctx.User.Id))
+            return;
+        Console.ForegroundColor = ConsoleColor.Red;
+        Console.BackgroundColor = ConsoleColor.Black;
+        Console.WriteLine($"Restart performed at {DateTimeOffset.UtcNow}\nDisconnecting and disposing");
+        Console.ResetColor();
+        await ctx.Client.DisconnectAsync();
+        ctx.Client.Dispose();
+        await Program.Main();
+    }
+    [Command("list-mods")]
+    public async Task ListMods(CommandContext ctx)
+    {
+        if (!IsOwner(ctx.User.Id))
+            return;
+        var sb = new StringBuilder();
+        foreach (var mod in Program.ModList)
+            sb.Append($"<@&{mod}> ");
+        sb.Length--;
+        await ctx.RespondAsync(sb.ToString());
     }
 }

@@ -5,6 +5,7 @@ global using DSharpPlus.Entities;
 global using DSharpPlus.SlashCommands.Attributes;
 using System.Xml.Serialization;
 using DSharpPlus.CommandsNext;
+using ModBot.Deps;
 
 namespace ModBot;
 
@@ -27,8 +28,8 @@ class Program
         LocalSettings = (Settings)xmlSerializer.Deserialize(reader)!;
         #pragma warning restore IL2026
     }
-    internal static List<ulong> ModList => LocalSettings.BotSettings.ModRoles.ModRoleId;
-    static async Task Main()
+    internal static List<ulong> ModList => (CList<ulong>)LocalSettings.BotSettings.ModRoles.ModRoleId + LocalSettings.BotSettings.AdminRoles.AdminRoleId;
+    public static async Task Main()
     {
         LoadSettings();
         LocalSettings.InitDeveloperSettings();
@@ -54,7 +55,7 @@ class Program
 
         var commands = client.UseCommandsNext(new CommandsNextConfiguration()
         {
-            StringPrefixes = new[] { "gf!" }
+            StringPrefixes = new[] { "bf!" }
         });
 
         commands.RegisterCommands(typeof(OwnerCommands));

@@ -1,6 +1,6 @@
 ﻿using System.Text;
 
-namespace ModBot;
+namespace ModBot.Deps;
 public static class GMethods
 {
     public static List<List<T>> ChunkBy<T>(this List<T> source, int chunkSize)
@@ -46,9 +46,9 @@ public static class GMethods
     public static string GetOrdinal(int input)
     {
         int num = input > 100 ? input % 100 : input;
-        if (num > 10 && num < 20) return "th";
         return (num % 10) switch
         {
+            _ when num is > 10 and < 20 => "th",
             1 => "st",
             2 => "nd",
             3 => "rd",
@@ -74,4 +74,14 @@ public static class GMethods
 
         return off.ToString(format);
     }
+}
+
+public class CList<T>
+{
+    public List<T> Values { get; set; } = new();
+
+    public static implicit operator List<T>(CList<T> list) => list.Values;
+    public static implicit operator CList<T>(List<T> list) => new() { Values = list };
+    public static CList<T> operator +(CList<T> list, T value) => new() { Values = list.Values.Append(value).ToList() };
+    public static CList<T> operator +(CList<T> list, CList<T> value) => new() { Values = list.Values.Concat((List<T>)value).ToList() };
 }
