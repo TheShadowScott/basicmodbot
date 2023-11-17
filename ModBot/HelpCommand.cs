@@ -2,7 +2,7 @@
 
 public sealed partial class DiscordCommands
 {
-    private static DiscordEmbedBuilder _QuickBuild(InteractionContext ctx, string name, string desc, List<(string, string)> args, Permissions permissionLevel)
+    private static DiscordEmbedBuilder QuickBuild(InteractionContext ctx, string name, string desc, List<(string, string)> args, Permissions permissionLevel)
     {
         return new DiscordEmbedBuilder()
         {
@@ -12,7 +12,7 @@ public sealed partial class DiscordCommands
         .AddField("Default Permission", permissionLevel.ToString(), true)
         .AddField("Can Use?", ctx.CheckPermissions(permissionLevel) ? "yes" : "no", true)
         .AddField("Description", desc)
-        .AddField("Arguments", string.Join('\n', (from item in args select $"`{item.Item1}` -> {item.Item2}")))
+        .AddField("Arguments", string.Join('\n', from item in args select $"`{item.Item1}` -> {item.Item2}"))
         .WithColor(0xFADADD);
 
     }
@@ -67,7 +67,7 @@ public sealed partial class DiscordCommands
                 break;
             case Commands.addrole:
                 await ctx.CreateResponseAsync(
-                    _QuickBuild(
+                    QuickBuild(
                         ctx,
                         "addrole",
                         "Adds a role to a given user",
@@ -95,7 +95,7 @@ public sealed partial class DiscordCommands
                 break;
             case Commands.ban:
                 await ctx.CreateResponseAsync(
-                    _QuickBuild(
+                    QuickBuild(
                         ctx,
                         "ban",
                         "Bans a user",
@@ -122,7 +122,7 @@ public sealed partial class DiscordCommands
                 break;
             case Commands.fetch:
                 await ctx.CreateResponseAsync(
-                    _QuickBuild(
+                    QuickBuild(
                         ctx,
                         "fetch",
                         "Fetches the logs for a user",
@@ -133,7 +133,7 @@ public sealed partial class DiscordCommands
                 break;
             case Commands.kick:
                 await ctx.CreateResponseAsync(
-                    _QuickBuild(
+                    QuickBuild(
                         ctx,
                         "kick",
                         "Kicks a user",
@@ -144,7 +144,7 @@ public sealed partial class DiscordCommands
                 break;
             case Commands.note:
                 await ctx.CreateResponseAsync(
-                    _QuickBuild(
+                    QuickBuild(
                         ctx,
                         "note",
                         "Adds a note to a user",
@@ -163,7 +163,7 @@ public sealed partial class DiscordCommands
                 break;
             case Commands.removerole:
                 await ctx.CreateResponseAsync(
-                    _QuickBuild(
+                    QuickBuild(
                         ctx,
                         "removerole",
                         "Removes a role from a user",
@@ -174,7 +174,7 @@ public sealed partial class DiscordCommands
                 break;
             case Commands.rename:
                 await ctx.CreateResponseAsync(
-                    _QuickBuild(
+                    QuickBuild(
                         ctx,
                         "rename",
                         "Renames a user",
@@ -194,7 +194,7 @@ public sealed partial class DiscordCommands
                 break;
             case Commands.timeout:
                 await ctx.CreateResponseAsync(
-                    _QuickBuild(
+                    QuickBuild(
                         ctx,
                         "timeout",
                         "Timeouts a user",
@@ -205,7 +205,7 @@ public sealed partial class DiscordCommands
                 break;
             case Commands.unban:
                 await ctx.CreateResponseAsync(
-                    _QuickBuild(
+                    QuickBuild(
                         ctx,
                         "unban",
                         "Unbans a user",
@@ -226,7 +226,7 @@ public sealed partial class DiscordCommands
                 break;
             case Commands.warn:
                 await ctx.CreateResponseAsync(
-                    _QuickBuild(ctx, "warn", "Warns a user",
+                    QuickBuild(ctx, "warn", "Warns a user",
                     new() { ("user", "User to warn"), ("warning", "Warning to issue") }, Permissions.ModerateMembers)
                     );
                 break;

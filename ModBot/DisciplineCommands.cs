@@ -17,7 +17,7 @@ public sealed partial class DiscordCommands : ApplicationCommandModule
         await ctx.CreateResponseAsync(InteractionResponseType.DeferredChannelMessageWithSource);
         var time = DateTime.UtcNow.ToString("O", CultureInfo.InvariantCulture);
 
-        await ExecCommand("WARN", user.Id, reason, ctx.User, time);
+        await ExecCommandAsync("WARN", user.Id, reason, ctx.User, time);
 
         var embed = QuickCreate.QuickEmbed(@$"<@{user.Id}> was warned for: `{reason.Replace("`", "\\`")}`", 0xFFEA00);
 
@@ -38,7 +38,7 @@ public sealed partial class DiscordCommands : ApplicationCommandModule
         await ctx.CreateResponseAsync(InteractionResponseType.DeferredChannelMessageWithSource);
         await (user as DiscordMember)!.SendMessageAsync(QuickCreate.QuickEmbed(@$"You have been kicked from {ctx.Guild.Name} for: `{reason.Replace("`", "\\`")}`", 0xDf9449));
         await (user as DiscordMember)!.RemoveAsync(reason);
-        await ExecCommand("KICK", user.Id, reason, ctx.User);
+        await ExecCommandAsync("KICK", user.Id, reason, ctx.User);
 
         await ctx.EditResponseAsync(new DiscordWebhookBuilder().AddEmbed(QuickCreate.QuickEmbed(@$"<@{user.Id}> has been kicked for: `{reason.Replace("`", "\\`")}`", 0xDf9449)));
     }
@@ -55,7 +55,7 @@ public sealed partial class DiscordCommands : ApplicationCommandModule
         await ctx.CreateResponseAsync(InteractionResponseType.DeferredChannelMessageWithSource);
         try
         {     
-            await ExecCommand("BAN", user.Id, reason, ctx.User);
+            await ExecCommandAsync("BAN", user.Id, reason, ctx.User);
             if (user as DiscordMember is not null)
               await (user as DiscordMember)?.SendMessageAsync(QuickCreate.QuickEmbed(@$"You have been banned from {ctx.Guild.Name} for: `{reason.Replace("`", "\\`")}`", 0xC70039))!;
         }
@@ -87,7 +87,7 @@ public sealed partial class DiscordCommands : ApplicationCommandModule
         }
         await ctx.CreateResponseAsync(InteractionResponseType.DeferredChannelMessageWithSource);
         await user.UnbanAsync(ctx.Guild, reason);
-        await ExecCommand("UNBAN", user.Id, reason, ctx.User);
+        await ExecCommandAsync("UNBAN", user.Id, reason, ctx.User);
         await ctx.EditResponseAsync(new DiscordWebhookBuilder().AddEmbed(QuickCreate.QuickEmbed(@$"<@{user.Id}> has been unbanned for: `{reason.Replace("`", "\\`")}`", 0x39845F)));
     }
     [SlashCommand("timeout", "Time outs the specified user")]
@@ -111,7 +111,7 @@ public sealed partial class DiscordCommands : ApplicationCommandModule
         await ctx.CreateResponseAsync(InteractionResponseType.DeferredChannelMessageWithSource);
         try
         {
-            await ExecCommand("MUTE", user.Id, $"{(length != -1 ? $"{length} min" : "REMOVED")}; {reason}", ctx.User);
+            await ExecCommandAsync("MUTE", user.Id, $"{(length != -1 ? $"{length} min" : "REMOVED")}; {reason}", ctx.User);
             await (user as DiscordMember)!.TimeoutAsync(DateTimeOffset.UtcNow.AddMinutes(length), reason);
             await ctx.EditResponseAsync(
                 new DiscordWebhookBuilder().AddEmbed(

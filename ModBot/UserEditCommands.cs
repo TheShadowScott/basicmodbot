@@ -72,7 +72,7 @@ public sealed partial class DiscordCommands : ApplicationCommandModule
             return;
         }
         await ctx.CreateResponseAsync(InteractionResponseType.DeferredChannelMessageWithSource);
-        await Drop(id);
+        await DropAsync(id);
         await ctx.EditResponseAsync(new DiscordWebhookBuilder().WithContent($"Log with id `{id}` has been DROPPED and is no longer accessable."));
     }
     [SlashRequireGuild()]
@@ -88,7 +88,7 @@ public sealed partial class DiscordCommands : ApplicationCommandModule
         await ctx.CreateResponseAsync(InteractionResponseType.DeferredChannelMessageWithSource);
         var time = DateTime.UtcNow.ToString("O", CultureInfo.InvariantCulture);
 
-        await ExecCommand("NOTE", user.Id, note, ctx.User, time);
+        await ExecCommandAsync("NOTE", user.Id, note, ctx.User, time);
 
         var embed = QuickCreate.QuickEmbed(@$"Added note to <@{user.Id}>: {note}", 0x49B6DF);
 
@@ -108,7 +108,7 @@ public sealed partial class DiscordCommands : ApplicationCommandModule
 
         await ctx.CreateResponseAsync(InteractionResponseType.DeferredChannelMessageWithSource);
 
-        await Alter(id, reason);
+        await AlterAsync(id, reason);
 
         await ctx.EditResponseAsync(new DiscordWebhookBuilder().AddEmbed(
                 new DiscordEmbedBuilder()

@@ -27,7 +27,7 @@ public sealed partial class DiscordCommands : ApplicationCommandModule
         await (user as DiscordMember)!.GrantRoleAsync(role);
 
         if (log) 
-            await ExecCommand("AROLE", user.Id, role.Id.ToString(), ctx.User);
+            await ExecCommandAsync("AROLE", user.Id, role.Id.ToString(), ctx.User);
 
         await ctx.EditResponseAsync(new DiscordWebhookBuilder().WithContent($"Successfully gave <@{user.Id}> the <@&{role.Id}> role!"));
     }
@@ -55,7 +55,7 @@ public sealed partial class DiscordCommands : ApplicationCommandModule
             await (user as DiscordMember)!.RevokeRoleAsync(role);
 
             if (log)
-                await ExecCommand("RROLE", user.Id, role.Id.ToString(), ctx.User);
+                await ExecCommandAsync("RROLE", user.Id, role.Id.ToString(), ctx.User);
 
             await ctx.EditResponseAsync(new DiscordWebhookBuilder().WithContent($"Successfully removed the <@&{role.Id}> role from <@{user.Id}>!"));
         }
@@ -84,7 +84,7 @@ public sealed partial class DiscordCommands : ApplicationCommandModule
                 x.AuditLogReason = reason;
             });
 
-            await ExecCommand("NICK", user.Id, reason + $" (Name changed to {name} from {user.Username}.)", ctx.User);
+            await ExecCommandAsync("NICK", user.Id, reason + $" (Name changed to {name} from {user.Username}.)", ctx.User);
 
             await ctx.EditResponseAsync(new DiscordWebhookBuilder().AddEmbed(
                 QuickCreate.QuickEmbed(@$"Changed the nickname for <@{user.Id}> ({user.Username}) to {name} for: `{reason.Replace("`", "\\`")}`.", 0x555555)

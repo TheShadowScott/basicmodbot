@@ -31,7 +31,7 @@ static class DatabaseCommands
         return warnings;
     }
 
-    internal static async Task ExecCommand(string type, ulong userId, string reason, DiscordUser Perp,
+    internal static async Task ExecCommandAsync(string type, ulong userId, string reason, DiscordUser Perp,
          string? time = null, bool suppressErrors = false)
     {
         try
@@ -56,7 +56,7 @@ static class DatabaseCommands
         }
     }
 
-    internal static async Task Alter(string id, string reason)
+    internal static async Task AlterAsync(string id, string reason)
     {
         try
         {
@@ -73,7 +73,7 @@ static class DatabaseCommands
         }
     }
 
-    internal static async Task Drop(string id)
+    internal static async Task DropAsync(string id)
     {
         try
         {
