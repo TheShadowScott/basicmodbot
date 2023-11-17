@@ -5,16 +5,13 @@ public sealed partial class DiscordCommands
     private static DiscordEmbedBuilder QuickBuild(InteractionContext ctx, string name, string desc, List<(string, string)> args, Permissions permissionLevel)
     {
         return new DiscordEmbedBuilder()
-        {
-            Title = "Help",
-            Description = $"`{name}`"
-        }
-        .AddField("Default Permission", permissionLevel.ToString(), true)
-        .AddField("Can Use?", ctx.CheckPermissions(permissionLevel) ? "yes" : "no", true)
-        .AddField("Description", desc)
-        .AddField("Arguments", string.Join('\n', from item in args select $"`{item.Item1}` -> {item.Item2}"))
-        .WithColor(0xFADADD);
-
+            .WithTitle("Help")
+            .WithDescription($"`{name}`")
+            .AddField("Default Permission", permissionLevel.ToString(), true)
+            .AddField("Can Use?", ctx.CheckPermissions(permissionLevel) ? "yes" : "no", true)
+            .AddField("Description", desc)
+            .AddField("Arguments", string.Join('\n', from item in args select $"`{item.Item1}` \u2192 {item.Item2}"))
+            .WithColor(0xFADADD);
     }
     public enum Commands
     {
@@ -84,9 +81,9 @@ public sealed partial class DiscordCommands
                         .AddField("Default Permissions", Program.LocalSettings.BotSettings.LogEditLevel == "Administrator" ? "Administrator"
                             : "Moderator", true)
                         .AddField("Can be used?", ctx.EditCheck() ? "yes" : "no", true)
-                        .AddField("Arguments", """
-                        `id` -> ID of the log to change
-                        `reason` -> Updated reason of the log
+                        .AddField("Arguments", $"""
+                        `id` {"\u2192"} ID of the log to change
+                        `reason` {"\u2192"} Updated reason of the log
                         """
                         )
                         .AddField("Description", "Changes the resoning behind a log.")
@@ -112,8 +109,8 @@ public sealed partial class DiscordCommands
                         .AddField("Default Permissions", Program.LocalSettings.BotSettings.LogEditLevel == "Administrator" ? "Administrator"
                             : "Moderator", true)
                         .AddField("Can be used?", ctx.EditCheck() ? "yes" : "no", true)
-                        .AddField("Arguments", """
-                        `id` -> ID of the log to drop
+                        .AddField("Arguments", $"""
+                        `id` {"\u2192"} ID of the log to drop
                         """
                         )
                         .AddField("Description", "Deletes a log from the database")
