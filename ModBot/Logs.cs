@@ -134,16 +134,16 @@ internal static partial class Logging
         {
             client.GuildMemberRemoved += async (sender, @event) =>
             {
-                if (@event.Guild is null || @event.Guild.Id != MainServerId)
+                if (@event.Guild is null || @event.Guild.Id != MainServerId ||
+                    (await @event.Guild.GetBansAsync()).Any(ban => ban.User.Id == @event.Member.Id))
                     return;
                 await sender.SendMessageAsync(await sender.GetChannelAsync(LogChannel), new DiscordEmbedBuilder()
                     .WithTitle("Member Left")
-                    .WithDescription(@$"{@event.Member.DisplayName}{(@event.Member.Discriminator is not "0" or null ?
-                    '#' + @event.Member.Discriminator : "")} ({@event.Member.Id})")
+                    .WithDescription(@$"\@{@event.Member.DisplayName}{(@event.Member.Discriminator is not "0" or null ?
+                        '#' + @event.Member.Discriminator : string.Empty)} ({@event.Member.Id})")
                     .WithColor(new DiscordColor(0xBD10E0))
                     .WithTimestamp(Now)
-                    .WithThumbnail(url: @event.Member.AvatarUrl)
-                    .AddField("Was Banned?", (await @event.Guild.GetBansAsync()).Any(ban => ban.User.Id == @event.Member.Id) ? "Yes" : "No"));
+                    .WithThumbnail(url: @event.Member.AvatarUrl));
             };
             return client;
         }
