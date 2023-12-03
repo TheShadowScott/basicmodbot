@@ -57,6 +57,19 @@
 									</xs:restriction>
 								</xs:simpleType>
 							</xs:element>
+							<xs:element name="LogLevel">
+								<xs:simpleType>
+									<xs:restriction base="xs:string">
+										<xs:enumeration value="None"></xs:enumeration>
+										<xs:enumeration value="Trace"></xs:enumeration>
+										<xs:enumeration value="Debug"></xs:enumeration>
+										<xs:enumeration value="Information"></xs:enumeration>
+										<xs:enumeration value="Warning"></xs:enumeration>
+										<xs:enumeration value="Error"></xs:enumeration>
+										<xs:enumeration value="Critical"></xs:enumeration>
+									</xs:restriction>
+								</xs:simpleType>
+							</xs:element>
 							<xs:element name="DeveloperAccessLevel" minOccurs="0">
 								<xs:simpleType>
 									<xs:restriction base="xs:string">

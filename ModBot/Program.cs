@@ -40,7 +40,7 @@ class Program
             Token = LocalSettings.InitSettings.BotId,
             TokenType = TokenType.Bot,
             AutoReconnect = true,
-            MinimumLogLevel = Microsoft.Extensions.Logging.LogLevel.Debug,
+            MinimumLogLevel = (Microsoft.Extensions.Logging.LogLevel)LocalSettings.BotSettings.GetLogLevel(),
             LogTimestampFormat = "dd MMM yyyy - HH:mm:ss.fff zzz",
             Intents = DiscordIntents.AllUnprivileged | DiscordIntents.GuildPresences | DiscordIntents.MessageContents | DiscordIntents.GuildMembers,
         };

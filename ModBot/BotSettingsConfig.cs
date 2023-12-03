@@ -66,6 +66,23 @@ public class BotSettings
     public string? DeveloperAccessLevel { get; set; }
     [XmlElement(ElementName = "DeveloperRoleId")]
     public ulong? DeveloperRoleId { get; set; }
+    [XmlElement(ElementName = "LogLevel")]
+    public string? LogLevel { get; set; }
+
+    public int GetLogLevel()
+    {
+        return LogLevel switch
+        {
+            "Trace" => 0,
+            "Debug" => 1,
+            "Information" => 2,
+            "Warning" => 3,
+            "Error" => 4,
+            "Critical" => 5,
+            "None" => 6,
+            _ => throw new ArgumentException("Invalid log level", nameof(LogLevel))
+        };
+    }
 }
 
 [XmlRoot(ElementName = "Settings")]

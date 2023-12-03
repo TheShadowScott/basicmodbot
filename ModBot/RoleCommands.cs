@@ -90,7 +90,7 @@ public sealed partial class DiscordCommands : ApplicationCommandModule
                 QuickCreate.QuickEmbed(@$"Changed the nickname for <@{user.Id}> ({user.Username}) to {name} for: `{reason.Replace("`", "\\`")}`.", 0x555555)
                 ));
         }
-        catch (Exception e)
+        catch
         {
             await ctx.EditResponseAsync(new DiscordWebhookBuilder().WithContent("Something went wrong."));
         }

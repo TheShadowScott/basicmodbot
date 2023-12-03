@@ -22,7 +22,8 @@ internal static partial class Logging
             ?.EnableMessageDeletionLogging()
             ?.EnableMemberUpdateLogging()
             ?.EnableModerationLogging()
-            ?.EnableVoiceChannelLogging();
+            ?.EnableVoiceChannelLogging()
+            ?.EnableChannelEventLogging();
     }
     /// <summary>
     /// Adds a logging method for message deletion. Requires <c>DiscordIntents.MessageContents</c>.
@@ -107,7 +108,7 @@ internal static partial class Logging
                     return;
                 await sender.SendMessageAsync(await sender.GetChannelAsync(LogChannel), new DiscordEmbedBuilder()
                      .WithTitle("Member Join")
-                     .WithDescription($"{@event.Member.DisplayName}{(@event.Member.Discriminator is not "0" or null ?
+                     .WithDescription($"@{@event.Member.DisplayName}{(@event.Member.Discriminator is not "0" or null ?
                     '#' + @event.Member.Discriminator : "")} ({@event.Member.Id})")
                      .WithColor(new DiscordColor(0xBD10E0))
                      .WithTimestamp(Now)
@@ -139,7 +140,7 @@ internal static partial class Logging
                     return;
                 await sender.SendMessageAsync(await sender.GetChannelAsync(LogChannel), new DiscordEmbedBuilder()
                     .WithTitle("Member Left")
-                    .WithDescription(@$"\@{@event.Member.DisplayName}{(@event.Member.Discriminator is not "0" or null ?
+                    .WithDescription(@$"@{@event.Member.DisplayName}{(@event.Member.Discriminator is not "0" or null ?
                         '#' + @event.Member.Discriminator : string.Empty)} ({@event.Member.Id})")
                     .WithColor(new DiscordColor(0xBD10E0))
                     .WithTimestamp(Now)
@@ -414,6 +415,45 @@ internal static partial class Logging
         catch (Exception ex)
         {
             Console.WriteLine(ex.ToString());
+            return null;
+        }
+    }
+    
+    /// <summary>
+    /// Enables logging of channel creation and deletion.
+    /// </summary>
+    /// <param name="client">Discord Client</param>
+    /// <returns><paramref name="client"> if successful, else <c>null</c></returns>
+    internal static DiscordClient? EnableChannelEventLogging(this DiscordClient client)
+    {
+        try
+        {
+            client.ChannelCreated += async (sender, @event) =>
+            {
+                if (@event.Guild is null || @event.Guild.Id != MainServerId)
+                    return;
+                await sender.SendMessageAsync(await sender.GetChannelAsync(LogChannel), new DiscordEmbedBuilder()
+                            .WithTitle("Channel Created")
+                            .WithDescription(@event.Channel.Name)
+                            .WithColor(new DiscordColor(0xBD10E0))
+                            .WithTimestamp(Now)
+                            .AddField("Channel ID", @event.Channel.Id.ToString(), true));
+            };
+            client.ChannelDeleted += async (sender, @event) =>
+            {
+                if (@event.Guild is null || @event.Guild.Id != MainServerId)
+                    return;
+                await sender.SendMessageAsync(await sender.GetChannelAsync(LogChannel), new DiscordEmbedBuilder()
+                            .WithTitle("Channel Deleted")
+                            .WithDescription(@event.Channel.Name)
+                            .WithColor(new DiscordColor(0xBD10E0))
+                            .WithTimestamp(Now)
+                            .AddField("Channel ID", @event.Channel.Id.ToString(), true));
+            };
+            return client;
+        }
+        catch
+        {
             return null;
         }
     }
